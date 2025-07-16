@@ -19,6 +19,6 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 
     @Override
     protected boolean sameOriginDisabled() {
-        return true; // Para desarrollo, en producción debería ser false
+        return true;
     }
 }

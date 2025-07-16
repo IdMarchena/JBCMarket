@@ -16,8 +16,8 @@ public class HttpSecurityConfig {
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable()) // ✅ forma correcta a partir de Spring Security 6.1+
-                .httpBasic(Customizer.withDefaults()); // puedes cambiarlo por JWT u otra forma de auth
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
