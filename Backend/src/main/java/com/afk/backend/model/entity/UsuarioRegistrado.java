@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name = "usuarios-registrados")
 @PrimaryKeyJoinColumn(name = "id_usuario")
-@Builder
 public class UsuarioRegistrado extends Usuario{
 
     @OneToOne(fetch = FetchType.LAZY)

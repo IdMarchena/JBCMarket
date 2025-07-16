@@ -13,4 +13,6 @@ public interface UsuarioRolRepository extends JpaRepository<UsuarioRol, Long> {
     List<UsuarioRol> findByUsuarioRegistradoIdOrderByFechaActivacionRolDesc(Long usuarioId);
     Optional<UsuarioRol> findByUsuarioRegistradoAndEstadoUsuarioRol(UsuarioRegistrado usuario, EstadoUsuarioRol estadoUsuarioRol);
     List<UsuarioRol> findByRolId(Long rolId);
+    List<UsuarioRol> findAllByUsuarioRegistradoAndEstadoUsuarioRol(UsuarioRegistrado usuario, EstadoUsuarioRol estadoUsuarioRol);
+
 }
