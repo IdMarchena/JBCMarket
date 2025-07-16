@@ -6,6 +6,7 @@ import com.afk.backend.control.service.RequisitoService;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class RequisitoServiceImpl implements RequisitoService {
     private final RequistoRepository requisitoRepository;
     private final VacanteRepository vacanteRepository;
     private final TipoRequistoRepository tipoRequisitoRepository;
+    @Qualifier("requisitoMapperImpl")
     private final RequisitoMapper mapper;
 
     @Override

@@ -10,6 +10,7 @@ import com.afk.backend.model.repository.HistorialPostulanteRepository;
 import com.afk.backend.model.repository.PostulacionRepository;
 import com.afk.backend.model.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ public class HistorialPostulanteServiceImpl implements HistorialPostulanteServic
     private final HistorialPostulanteRepository historialRepository;
     private final PostulacionRepository postulacionRepository;
     private final UsuarioRepository usuarioRepository;
+
+    @Qualifier("historialPostulanteMapperImpl")
     private final HistorialPostulanteMapper mapper;
 
     @Override

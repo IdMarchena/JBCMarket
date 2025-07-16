@@ -1,6 +1,5 @@
 package com.afk.backend.control.dto;
-
-import com.afk.backend.model.entity.Rol;
+import com.afk.backend.model.entity.enm.Roles;
 
 public record SignUpRequest(String nombre,
                             String apellido,
@@ -9,5 +8,5 @@ public record SignUpRequest(String nombre,
                             String correo,
                             String contrasenia,
                             String codigo,
-                            Rol rol) {
+                            Roles rol) {
 }

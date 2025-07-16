@@ -6,6 +6,7 @@ import com.afk.backend.control.service.TipoEmpresaService;
 import com.afk.backend.model.entity.TipoEmpresa;
 import com.afk.backend.model.repository.TipoEmpresaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class TipoEmpresaServiceImpl implements TipoEmpresaService {
 
     private final TipoEmpresaRepository tipoEmpresaRepository;
+    @Qualifier("tipoEmpresaMapperImpl")
     private final TipoEmpresaMapper mapper;
 
     @Override

@@ -23,18 +23,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public UsuarioDto createUsuario(UsuarioDto usuarioDto) {
-        // Validar que el correo no exista
         if (usuarioRepository.findByCorreo(usuarioDto.correo()).isPresent()) {
             throw new RuntimeException("El correo ya está registrado");
         }
 
-        // Mapear DTO a entidad
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioDto.nombre());
         usuario.setCorreo(usuarioDto.correo());
-        usuario.setContrasenia(usuarioDto.contrasenia()); // En producción, deberías encriptar la contraseña
+        usuario.setContrasenia(usuarioDto.contrasenia());
 
-        // Guardar usuario
         Usuario savedUsuario = usuarioRepository.save(usuario);
 
         return mapToDto(savedUsuario);

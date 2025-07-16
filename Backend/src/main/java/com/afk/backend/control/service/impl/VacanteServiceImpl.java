@@ -8,6 +8,7 @@ import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoUbicacion;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class VacanteServiceImpl implements VacanteService {
     private final VacanteRepository vacanteRepository;
     private final UbicacionRepository ubicacionRepository;
     private final EmpresaRepository empresaRepository;
+    @Qualifier("vacanteMapperImpl")
     private final VacanteMapper mapper;
     private final UbicacionServiceImpl ubicacionService;
 

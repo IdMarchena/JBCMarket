@@ -1,12 +1,11 @@
 package com.afk.backend.control.service.impl;
 
-import com.afk.backend.control.dto.CitaDto;
 import com.afk.backend.control.dto.EmpresaDto;
 import com.afk.backend.control.mapper.EmpresaMapper;
 import com.afk.backend.control.service.EmpresaService;
-import com.afk.backend.model.entity.Cita;
 import com.afk.backend.model.entity.Empresa;
 import com.afk.backend.model.repository.EmpresaRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,7 +20,8 @@ public class EmpresaServiceImpl implements EmpresaService {
     private final EmpresaRepository repository;
     private final EmpresaMapper mapper;
 
-    public EmpresaServiceImpl(EmpresaRepository repository, EmpresaMapper mapper) {
+    public EmpresaServiceImpl(EmpresaRepository repository,
+                              @Qualifier("empresaMapperImpl") EmpresaMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }

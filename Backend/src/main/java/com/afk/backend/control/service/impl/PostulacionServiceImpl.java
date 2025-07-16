@@ -6,6 +6,7 @@ import com.afk.backend.control.service.PostulacionService;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     private final PostulacionRepository postulacionRepository;
     private final VacanteRepository vacanteRepository;
     private final UsuarioRepository usuarioRepository;
+    @Qualifier("postulacionMapperImpl")
     private final PostulacionMapper mapper;
 
     @Override

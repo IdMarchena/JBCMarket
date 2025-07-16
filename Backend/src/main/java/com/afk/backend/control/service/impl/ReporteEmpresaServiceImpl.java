@@ -6,6 +6,7 @@ import com.afk.backend.control.service.ReporteEmpresaService;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ReporteEmpresaServiceImpl implements ReporteEmpresaService {
     private final ReporteEmpresaRepository reporteRepository;
     private final EmpresaRepository empresaRepository;
     private final UsuarioRepository usuarioRepository;
+    @Qualifier("reporteEmpresaMapperImpl")
     private final ReporteEmpresaMapper mapper;
 
     @Override
