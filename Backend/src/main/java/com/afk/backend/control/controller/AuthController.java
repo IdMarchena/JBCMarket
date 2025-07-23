@@ -3,33 +3,43 @@ package com.afk.backend.control.controller;
 import com.afk.backend.control.dto.JwtResponse;
 import com.afk.backend.control.dto.LoginRequest;
 import com.afk.backend.control.dto.SignUpRequest;
+import com.afk.backend.control.security.jwt.JwtProtocolConfig;
 import com.afk.backend.control.security.jwt.JwtUtil;
+import com.afk.backend.control.security.service.UserDetailsImpl;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoUsuarioRegistrado;
 import com.afk.backend.model.entity.enm.EstadoUsuarioRol;
+import com.afk.backend.model.entity.enm.Roles;
 import com.afk.backend.model.repository.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.*;
 
 import com.afk.backend.model.entity.Rol;
+
+import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -137,6 +147,7 @@ public class AuthController {
                     .body("Error en el registro: " + e.getMessage());
         }
     }
+
 
 }
 
