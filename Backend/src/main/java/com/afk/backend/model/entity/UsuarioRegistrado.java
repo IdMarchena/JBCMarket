@@ -24,7 +24,7 @@ public class UsuarioRegistrado extends Usuario{
     private Rol rol;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_ubicacion",nullable = false)
+    @JoinColumn(name="id_ubicacion",nullable = true)
     private Ubicacion ubicacion;
 
     @Column(name="fecha_registro",nullable = false)
