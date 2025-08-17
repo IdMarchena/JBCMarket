@@ -21,12 +21,12 @@ public class UsuarioRol {
     @Column(name = "id_usuario")
     private Long id_usuario;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario-registrado",nullable = false)
     private UsuarioRegistrado usuarioRegistrado;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
     @Column(name="fecha_activacion_rol",nullable = false)

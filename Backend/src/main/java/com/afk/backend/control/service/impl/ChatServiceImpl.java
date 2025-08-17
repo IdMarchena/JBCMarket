@@ -2,13 +2,18 @@ package com.afk.backend.control.service.impl;
 
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
+import com.afk.backend.client.external.dto.UbicacionDt;
+import com.afk.backend.control.mapper.ChatMapper;
 import com.afk.backend.control.service.ChatService;
 import com.afk.backend.model.entity.Chat;
+import com.afk.backend.model.entity.Ubicacion;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.repository.ChatRepository;
 import com.afk.backend.model.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +27,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ChatMapper chatMapper;
 
     @Override
     @Transactional
@@ -106,5 +112,23 @@ public class ChatServiceImpl implements ChatService {
                 chat.getEstado_chat(),
                 chat.getFechaCreacion()
         );
+    }
+    @Override
+    @Transactional
+    public void updateChatStatus(Long chatId, EstadoChat status) {
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new RuntimeException("Chat no encontrado"));
+
+        chat.setEstado_chat(status); // Actualiza el estado
+        chatRepository.save(chat); // Guarda el cambio
+    }
+    @Override
+    public Integer obtenerCantidadDeChatsEncontrados(){
+        return (int) chatRepository.count();
+    }
+    @Override
+    public Page<ChatResponse> buscarChats(String filtro, Pageable pageable){
+        Page<Chat> chats= chatRepository.findByMensajeContaining(filtro, pageable);
+        return chats.map(chatMapper::toResponse);
     }
 }

@@ -18,10 +18,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Utilidad JWT refactorizada siguiendo protocolo estricto
- * Elimina todas las inconsistencias del sistema anterior
- */
 @Component
 @RequiredArgsConstructor
 @Slf4j

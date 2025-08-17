@@ -2,6 +2,8 @@ package com.afk.backend.control.mapper;
 
 
 import com.afk.backend.client.external.dto.UbicacionDt;
+import com.afk.backend.control.dto.CalificacionDto;
+import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.Ubicacion;
 import org.mapstruct.*;
 
@@ -21,4 +23,8 @@ public interface UbicacionMapper {
     List<UbicacionDt> toDtos(List<Ubicacion> ubicaciones);
 
     List<Ubicacion> toEntities(List<UbicacionDt> ubicacionDtos);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(UbicacionDt dto, @MappingTarget Ubicacion entity);
+
 }

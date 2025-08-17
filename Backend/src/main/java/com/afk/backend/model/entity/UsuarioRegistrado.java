@@ -1,6 +1,5 @@
 package com.afk.backend.model.entity;
 
-import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.entity.enm.EstadoUsuarioRegistrado;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,12 +18,12 @@ import java.time.LocalDateTime;
 @PrimaryKeyJoinColumn(name = "id_usuario")
 public class UsuarioRegistrado extends Usuario{
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rol", nullable = true)
     private Rol rol;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_ubicacion",nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_ubicacion", nullable = true)
     private Ubicacion ubicacion;
 
     @Column(name="fecha_registro",nullable = false)

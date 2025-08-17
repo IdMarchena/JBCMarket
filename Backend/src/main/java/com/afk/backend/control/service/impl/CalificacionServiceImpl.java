@@ -1,11 +1,12 @@
 package com.afk.backend.control.service.impl;
-
 import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.mapper.CalificacionMapper;
 import com.afk.backend.control.service.CalificacionService;
 import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.repository.CalificacionRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +60,16 @@ public class CalificacionServiceImpl implements CalificacionService {
             throw new NoSuchElementException("Calificación con ID " + id + " no encontrada");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public Integer obtenerCantidadCalificaciones() {
+        return (int) repository.count();
+    }
+
+    @Override
+    public Page<CalificacionDto> buscarCalificaciones(String filtro, Pageable pageable){
+        Page<Calificacion> calificaciones= repository.findByNombreContaining(filtro, pageable);
+        return calificaciones.map(mapper::toDto);
     }
 }

@@ -8,10 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.List;
 
-/**
- * Configuración centralizada del protocolo JWT
- * Elimina las inconsistencias del sistema anterior
- */
+
 @Component
 @Slf4j
 @Getter

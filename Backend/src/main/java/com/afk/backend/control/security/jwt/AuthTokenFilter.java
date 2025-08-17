@@ -17,11 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
-/**
- * Filtro JWT refactorizado siguiendo protocolo estricto
- * Elimina todas las inconsistencias y duplicaciones del sistema anterior
- */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -67,13 +62,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Procesa la autenticación JWT siguiendo el protocolo estricto
-     */
+
     private void processJwtAuthentication(HttpServletRequest request) {
-        if (request.getRequestURI().startsWith("/oauth2/") ||
-                request.getRequestURI().equals("/api/v1/auth/loginSuccess")) {
-            log.debug("Skipping JWT processing for OAuth2 endpoint: {}", request.getRequestURI());
+        String requestUri = request.getRequestURI();
+        if (requestUri.startsWith("/oauth2/") ||
+                requestUri.startsWith("/login/oauth2/") ||
+                requestUri.equals("/api/v1/auth/login") ||
+                requestUri.equals("/api/v1/auth/signup")) {
+            log.debug("Skipping JWT processing for OAuth2 or auth endpoint: {}", requestUri);
             return;
         }
         // Extraer token usando protocolo estricto
@@ -86,7 +82,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Validar token usando protocolo optimizado
+        // Validar token
         JwtValidationResult validationResult = jwtUtil.validateAndParseToken(token);
 
         if (!validationResult.isValid()) {

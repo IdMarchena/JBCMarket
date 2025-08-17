@@ -25,11 +25,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
-
-/**
- * Servicio OAuth2 optimizado siguiendo protocolo JWT
- * Elimina dependencias innecesarias y mejora la gestión de usuarios
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j

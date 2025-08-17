@@ -39,7 +39,4 @@ public class Notificacion {
     @Enumerated(EnumType.STRING)
     private EstadoNotificacion estado_notificacion;
 
-
-
-
 }

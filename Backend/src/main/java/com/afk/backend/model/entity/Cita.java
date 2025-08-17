@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Cita {
     private Long id;
 
     @Column(name="fecha_cita",nullable = false)
-    private LocalDate fecha ;
+    private LocalDateTime fecha ;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_postulante",nullable = false)

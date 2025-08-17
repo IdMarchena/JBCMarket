@@ -7,10 +7,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
-/**
- * Configuración centralizada de seguridad JWT refactorizada
- * Elimina configuraciones duplicadas y usa protocolo estricto
- */
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +30,6 @@ public class JwtSecurityConfig {
                 log.warn("JWT Issuer no configurado. Usando valor por defecto.");
             }
 
-            // Logs informativos después de validación exitosa
             log.info("=== JWT SECURITY PROTOCOL INITIALIZED ===");
             log.info("🔐 JWT Configuration:");
             log.info("   ├─ Expiration: {} minutes", protocolConfig.getExpirationMinutes());

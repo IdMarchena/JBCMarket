@@ -6,10 +6,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-/**
- * Resultado de validación JWT siguiendo protocolo estricto
- * Encapsula toda la información de validación de manera consistente
- */
+
 @Getter
 @Builder
 public class JwtValidationResult {
