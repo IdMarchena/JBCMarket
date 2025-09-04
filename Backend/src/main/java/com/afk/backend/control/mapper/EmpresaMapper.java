@@ -25,14 +25,27 @@ public interface EmpresaMapper {
         return tipoEmpresa;
     }
 
-    @Mapping(source = "usuario.id", target = "idUsuarioGerente")
-    @Mapping(source = "tipo_Empresa.id", target = "idTipoEmpresa")
-    EmpresaDto toDto(Empresa empresa);
-
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nombre",source="nombre")
+    @Mapping(target = "descripcion",source="descripcion")
     @Mapping(target = "usuario", expression = "java(mapU(dto.idUsuarioGerente()))")
     @Mapping(target = "tipo_Empresa", expression = "java(mapT(dto.idTipoEmpresa()))")
+    @Mapping(target = "numeroEmpleados",source="numeroEmpleados")
     Empresa toEntity(EmpresaDto dto);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "nombre",target="nombre")
+    @Mapping(source = "descripcion",target="descripcion")
+    @Mapping(source = "usuario.id", target = "idUsuarioGerente")
+    @Mapping(source = "tipo_Empresa.id", target = "idTipoEmpresa")
+    @Mapping(source = "numeroEmpleados",target="numeroEmpleados")
+    EmpresaDto toDto(Empresa empresa);
+
+
+
+
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(EmpresaDto dto,@MappingTarget Empresa entity);
+
 }

@@ -1,9 +1,10 @@
 package com.afk.backend.control.mapper;
 
+import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.TipoEmpresaDto;
+import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.TipoEmpresa;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,4 +26,7 @@ public interface TipoEmpresaMapper {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(TipoEmpresaDto dto, @MappingTarget TipoEmpresa entity);
 }
