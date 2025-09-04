@@ -15,6 +15,7 @@ import lombok.*;
 public class Ubicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_ubicacion")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

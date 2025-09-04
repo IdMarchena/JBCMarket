@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @Data
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_chat")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -14,16 +15,16 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Table(name = "usuarios-registrados")
+@Table(name = "usuarios_registrados")
 @PrimaryKeyJoinColumn(name = "id_usuario")
 public class UsuarioRegistrado extends Usuario{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol", nullable = true)
+    @JoinColumn(name = "id_rol")
     private Rol rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ubicacion", nullable = true)
+    @JoinColumn(name = "id_ubicacion")
     private Ubicacion ubicacion;
 
     @Column(name="fecha_registro",nullable = false)
@@ -34,5 +35,13 @@ public class UsuarioRegistrado extends Usuario{
 
     @Column(name="telefono_usuario",nullable = false,length = 10)
     private String telefono_usuario;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "usuario_requisito",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_requisito")
+    )
+    private List<Requisito> requisitos;
 
 }

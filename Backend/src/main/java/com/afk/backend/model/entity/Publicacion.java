@@ -19,17 +19,18 @@ import java.util.List;
 @Data
 public class Publicacion {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Column(name="id_publicacion")
     private Long id;
 
     @Column(name="titulo_publicacion", nullable = false,length = 100)
     private String titulo;
 
     @Column(name="descripion_publicacion", nullable = false,length = 1000)
-    private String desripcion;
+    private String descripcion;
 
     @OneToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name="id_vacante",nullable = false)
+    @JoinColumn(name="vacante_id",nullable = false)
     private Vacante vacante;
 
     @Column(name="fecha_publicacion", nullable = false)

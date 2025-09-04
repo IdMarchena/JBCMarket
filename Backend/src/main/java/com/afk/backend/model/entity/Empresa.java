@@ -1,25 +1,19 @@
 package com.afk.backend.model.entity;
-
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Builder
 @Data
 @Table(name = "empresas")
 public class Empresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_empresa", updatable = false, nullable = false)
+    private Long id;
 
     @Column(name = "nombre_emprpesa", nullable = false,length = 250)
     private String nombre;
@@ -36,7 +30,7 @@ public class Empresa {
     private TipoEmpresa tipo_Empresa;
 
     @Column(name = "numero_empleados", nullable = false)
-    private int numero_empleados;
+    private int numeroEmpleados;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vacante> vacantes = new ArrayList<>();

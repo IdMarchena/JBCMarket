@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @Table(name = "notifiaciones")
 public class Notificacion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_notificacion")
     private Long id_notificacion;
 
     @Column(name="mensaje",nullable = false, length = 250)
@@ -29,11 +30,11 @@ public class Notificacion {
     private LocalDateTime fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = true)
+    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_empresa", nullable = true)
+    @JoinColumn(name = "empresa_id", nullable = true)
     private Empresa empresa;
 
     @Enumerated(EnumType.STRING)

@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @Data
 public class Cita {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_cita")
     private Long id;
 
     @Column(name="fecha_cita",nullable = false)
@@ -28,14 +29,14 @@ public class Cita {
     private Usuario usuario;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_postulacion",nullable = false)
+    @JoinColumn(name = "postulacion_id",nullable = false)
     private Postulacion postulacion;
 
     @Enumerated(EnumType.STRING)
     private EstadoCita estado_cita;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_empresa",nullable = false)
+    @JoinColumn(name = "empresa_id",nullable = false)
     private Empresa empresa;
 
 }

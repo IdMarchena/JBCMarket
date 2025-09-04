@@ -8,12 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "vacantes")
+@Table(name = "tipo_requisitos")
 @Builder
 @Data
 public class TipoRequisito {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_tipo_requisito")
     private Long id;
 
     @Column(name="tipo_requisito",nullable = false,length = 250)

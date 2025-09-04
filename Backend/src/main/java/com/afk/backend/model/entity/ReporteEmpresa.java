@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Data
 public class ReporteEmpresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_reporte_empresa")
     private Long id;
 
     @Column(name="desripncion_reporte_empresa", nullable = false,length = 1000)
@@ -25,11 +26,11 @@ public class ReporteEmpresa {
     private LocalDateTime fechaReporte;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_empresa",nullable = false)
+    @JoinColumn(name = "empresa_id",nullable = false)
     private Empresa empresa;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario",nullable = false)
+    @JoinColumn(name = "usuario_id",nullable = false)
     private Usuario usuario;
 
     @Column(name="tipo_reporte_empresa", nullable = false,length = 1000)

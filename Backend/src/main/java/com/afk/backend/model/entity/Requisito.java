@@ -3,27 +3,32 @@ package com.afk.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "vacantes")
+@Table(name = "requisitos")
 @Builder
 @Data
 public class Requisito {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_requisito")
     private Long id;
 
     @Column(name="descripcion_requisito",nullable = false,length = 250)
-    private String descripcion_requisito;
+    private String descripcion;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_vacante",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="vacante_id", nullable=false)
     private Vacante vacante;
-
+    
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_Tipo_Requisito",nullable = false)
-    private TipoRequisito tipo_requisito;
+    private TipoRequisito tipo;
+
+
 }

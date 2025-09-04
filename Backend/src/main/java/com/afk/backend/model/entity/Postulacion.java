@@ -17,14 +17,15 @@ import java.util.List;
 @Data
 public class Postulacion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_postulacion")
     private long id;
 
     @Column(name = "contenido_postulacion", nullable = false,length = 1000)
     private String contenido_postulacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_vacante", nullable = false)
+    @JoinColumn(name = "vacante_id", nullable = false)
     private Vacante vacante;
 
     @OneToOne(fetch = FetchType.LAZY)

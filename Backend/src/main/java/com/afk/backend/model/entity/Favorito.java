@@ -1,9 +1,6 @@
 package com.afk.backend.model.entity;
-
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,18 +13,19 @@ import java.time.LocalDateTime;
 @Data
 public class Favorito {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Column(name="id_favorito")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_publicacion", nullable = false)
+    @JoinColumn(name = "publicacion_id", nullable = false)
     private Publicacion publicacion;
 
     @Column(name="fecha_favorito",nullable = false)
-    private LocalDateTime fecha_favorito;
+    private LocalDateTime fecha;
 
 }

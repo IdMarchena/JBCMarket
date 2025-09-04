@@ -10,14 +10,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Getter
-@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Table(name = "Usuarios")
+@Table(name = "usuarios")
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_usuario")
     private Long id;
 
     @Column(name = "nombre_usuario",nullable = false, length = 250)
@@ -26,8 +25,11 @@ public class Usuario {
     @Column(name = "correo_usuario",nullable = false, length = 250)
     private String correo;
 
-    @Column(name="contraseña",nullable = false)
+    @Column(name="contrasena",nullable = false)
     private String contrasenia;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "perfil_id")
+    private Perfil perfil;
 
 }

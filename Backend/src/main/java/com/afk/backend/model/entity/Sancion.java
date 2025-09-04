@@ -18,18 +18,19 @@ import java.time.LocalDateTime;
 @Data
 public class Sancion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_sancion")
     private Long id;
 
     @Column(name="descripcion_sancion",nullable = false,length = 250)
     private String descripcion;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario",nullable = false)
+    @JoinColumn(name = "usuario_id",nullable = false)
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_publicacion",nullable = false)
+    @JoinColumn(name = "publicacion_id",nullable = false)
     private Publicacion publicacion;
 
     @Column(name="fecha_sancion",nullable = false)

@@ -1,9 +1,6 @@
 package com.afk.backend.model.entity;
-
-
 import jakarta.persistence.*;
 import lombok.*;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +11,8 @@ import lombok.*;
 @Data
 public class Calificacion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_calificacion")
     private long id;
 
     @Column(name = "puntaje_calificacion", nullable = false)
@@ -24,11 +22,11 @@ public class Calificacion {
     private String comentario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario_postulante", nullable = true)
+    @JoinColumn(name = "usuario_postulante_id")
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_Publicacion", nullable = true)
+    @JoinColumn(name = "publicacion_id")
     private Publicacion publicacion;
 
 }
