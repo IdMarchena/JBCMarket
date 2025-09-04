@@ -80,7 +80,7 @@ public class NotificacionController {
             @RequestParam int puntaje) {
 
         PublicacionDto publicacionDto = new PublicacionDto(idPublicacion, null, null, null, null, null, null);
-        UsuarioDto usuarioDto = new UsuarioDto(idCalificador, null, null, null);
+        UsuarioDto usuarioDto = new UsuarioDto(idCalificador, null, null, null,null);
 
         notificacionService.notificarCalificacion(publicacionDto, usuarioDto, puntaje);
 

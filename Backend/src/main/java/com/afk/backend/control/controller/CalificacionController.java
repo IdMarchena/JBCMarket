@@ -1,6 +1,4 @@
 package com.afk.backend.control.controller;
-
-import com.afk.backend.client.external.dto.UbicacionDt;
 import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.service.CalificacionService;
 import lombok.RequiredArgsConstructor;
@@ -20,39 +18,16 @@ public class CalificacionController {
 
     private final CalificacionService calificacionService;
 
-    @PostMapping("/crearCalificacion")
-    public ResponseEntity<CalificacionDto> crearCalificacion(@RequestBody CalificacionDto calificacionDto) {
-        CalificacionDto creada = calificacionService.createCalificacion(calificacionDto);
-        return ResponseEntity.ok(creada);
-    }
 
-    @GetMapping("/ObtenerCalificacionPorId/{id}")
-    public ResponseEntity<CalificacionDto> obtenerPorId(@PathVariable Long id) {
-        CalificacionDto calificacion = calificacionService.findCalificacionById(id);
-        return ResponseEntity.ok(calificacion);
-    }
-
-    @GetMapping("/listarCalificaciones")
-    public ResponseEntity<List<CalificacionDto>> listarTodas() {
-        List<CalificacionDto> calificaciones = calificacionService.findAllCalificaciones();
-        return ResponseEntity.ok(calificaciones);
-    }
-
-    @PutMapping("/actualizarCalificacion/{id}")
-    public ResponseEntity<CalificacionDto> actualizarCalificacion(@PathVariable Long id, @RequestBody CalificacionDto dto) {
-        CalificacionDto actualizada = calificacionService.updateCalificacion(id, dto);
-        return ResponseEntity.ok(actualizada);
-    }
-
-    @DeleteMapping("/deleteCalificacion/{id}")
-    public ResponseEntity<Void> eliminarCalificacion(@PathVariable Long id) {
-        calificacionService.deleteCalificacionById(id);
-        return ResponseEntity.noContent().build();
-    }
     @GetMapping("/obtenerCantidadCalificaciones")
     public ResponseEntity<String> obtenerCantidadCalificaciones() {
         return ResponseEntity.ok("cantidad de ubicaciones:"+
                 calificacionService.obtenerCantidadCalificaciones());
+    }
+    @GetMapping("/ObtenerCalificacionPorId/{id}")
+    public ResponseEntity<CalificacionDto> obtenerPorId(@PathVariable Long id) {
+        CalificacionDto calificacion = calificacionService.findCalificacionById(id);
+        return ResponseEntity.ok(calificacion);
     }
     @GetMapping("/buscarCalificaciones")
     public ResponseEntity<Page<CalificacionDto>> buscarCalificaciones(
@@ -67,4 +42,30 @@ public class CalificacionController {
         Page<CalificacionDto> resultados= calificacionService.buscarCalificaciones(filtro,pageable);
         return ResponseEntity.ok(resultados);
     }
+
+    @PostMapping("/crearCalificacion")
+    public ResponseEntity<CalificacionDto> crearCalificacion(@RequestBody CalificacionDto calificacionDto) {
+        CalificacionDto creada = calificacionService.createCalificacion(calificacionDto);
+        return ResponseEntity.ok(creada);
+    }
+    @PutMapping("/actualizarCalificacion/{id}")
+    public ResponseEntity<CalificacionDto> actualizarCalificacion(@PathVariable Long id, @RequestBody CalificacionDto dto) {
+        CalificacionDto actualizada = calificacionService.updateCalificacion(id, dto);
+        return ResponseEntity.ok(actualizada);
+    }
+
+
+
+    @GetMapping("/listarCalificaciones")
+    public ResponseEntity<List<CalificacionDto>> listarTodas() {
+        List<CalificacionDto> calificaciones = calificacionService.findAllCalificaciones();
+        return ResponseEntity.ok(calificaciones);
+    }
+
+    @DeleteMapping("/deleteCalificacion/{id}")
+    public ResponseEntity<Void> eliminarCalificacion(@PathVariable Long id) {
+        calificacionService.deleteCalificacionById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
