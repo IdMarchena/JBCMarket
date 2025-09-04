@@ -4,5 +4,5 @@ public record RequisitoDto(
         Long id,
         String descripcion,
         Long idVacante,
-        Long idTipoRequisito
+        Long idTipo
 ) {}

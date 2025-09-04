@@ -4,5 +4,6 @@ public record UsuarioDto(
         Long id,
         String nombre,
         String correo,
-        String contrasenia
+        String contrasenia,
+        Long idPerfil
 ) {}
