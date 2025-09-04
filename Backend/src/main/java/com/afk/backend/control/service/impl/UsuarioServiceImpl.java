@@ -1,11 +1,11 @@
 package com.afk.backend.control.service.impl;
-
 import com.afk.backend.control.dto.UsuarioDto;
-import com.afk.backend.control.mapper.UsuarioMapper;
 import com.afk.backend.control.service.UsuarioService;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final UsuarioMapper usuarioMapper;
 
     @Override
     @Transactional
@@ -93,12 +92,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         return mapToDto(usuario);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public UsuarioDto findByNombre(String nombre) {
+        return mapToDto(usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+    }
+
     private UsuarioDto mapToDto(Usuario usuario) {
         return new UsuarioDto(
                 usuario.getId(),
                 usuario.getNombre(),
                 usuario.getCorreo(),
-                null
+                null,
+                usuario.getPerfil().getId()
         );
+    }
+    @Override
+    public Integer getCantidadUsuarios() {
+        return  (int) usuarioRepository.count();
+    }
+
+    @Override
+    public Page<UsuarioDto> SearchUserByFilter(String filtro, Pageable pageable){
+        Page<Usuario> usuarios = usuarioRepository.findByCorreoContaining(filtro, pageable);
+        return usuarios.map(this::mapToDto);
     }
 }

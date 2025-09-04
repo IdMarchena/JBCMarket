@@ -15,6 +15,7 @@ public interface CitaService {
     CitaDto updateCita(Long id, CitaDto cita);
     void deleteCitaById(Long id);
     List<CitaDto> findCitasByUsuario(Long idUsuario);
-    Page<CitaDto> buscarUbicaciones(LocalDateTime fecha, Pageable pageable);
-    Integer obtenerCantidadUbicaciones();
+    Page<CitaDto> buscarCitas(LocalDateTime fecha, Pageable pageable);
+    Integer obtenerCantidadCitas();
+
 }

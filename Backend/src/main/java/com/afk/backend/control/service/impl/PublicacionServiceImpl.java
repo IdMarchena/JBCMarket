@@ -7,6 +7,8 @@ import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +30,21 @@ public class PublicacionServiceImpl implements PublicacionService {
     public PublicacionDto createPublicacion(PublicacionDto publicacionDto) {
         Vacante vacante = vacanteRepository.findById(publicacionDto.idVacante())
                 .orElseThrow(() -> new RuntimeException("Vacante no encontrada"));
-
         Publicacion publicacion = mapper.toEntity(publicacionDto);
+        publicacion.setTitulo(publicacionDto.titulo());
+        publicacion.setDescripcion(publicacionDto.descripcion());
         publicacion.setVacante(vacante);
         publicacion.setFechaPublicacion(LocalDateTime.now());
+        publicacion.setEstado_publiccaion(publicacionDto.estadoPublicacion());
 
+        // Verificar si hay calificaciones asociadas
         if (publicacionDto.calificacionesIds() != null && !publicacionDto.calificacionesIds().isEmpty()) {
+            // Solo buscar calificaciones si la lista no está vacía
             List<Calificacion> calificaciones = calificacionRepository.findAllById(publicacionDto.calificacionesIds());
             publicacion.setCalificaciones(calificaciones);
+        } else {
+            // Si no hay calificaciones, inicializa la lista vacía para evitar null
+            publicacion.setCalificaciones(List.of());
         }
 
         Publicacion savedPublicacion = publicacionRepository.save(publicacion);
@@ -68,7 +77,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacion.setTitulo(publicacionDto.titulo());
         }
         if (publicacionDto.descripcion() != null) {
-            publicacion.setDesripcion(publicacionDto.descripcion());
+            publicacion.setDescripcion(publicacionDto.descripcion());
         }
         if (publicacionDto.estadoPublicacion() != null) {
             publicacion.setEstado_publiccaion(publicacionDto.estadoPublicacion());
@@ -97,5 +106,25 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Transactional(readOnly = true)
     public List<PublicacionDto> findByEmpresaId(Long idEmpresa) {
         return mapper.toDtoList(publicacionRepository.findByVacanteEmpresaId(idEmpresa));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PublicacionDto> findByRequisitosUsuarioRegistrado(Long idUsuario) {
+        return mapper.toDtoList(publicacionRepository.findByRequisitosUsuarioRegistrado(idUsuario));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer obtenerCantidadPublicacionesEmpresa(Long idEmpresa){
+        return publicacionRepository.countByPublicacionEmpresaId(idEmpresa);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PublicacionDto> searchPostByFilter(String filtro, Pageable pageable){
+        Page<Publicacion> publicacions = publicacionRepository.findByTituloContaining(filtro, pageable);
+        return publicacions.map(mapper::toDto);
+
     }
 }

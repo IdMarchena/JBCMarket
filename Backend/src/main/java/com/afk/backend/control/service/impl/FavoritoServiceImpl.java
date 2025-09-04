@@ -1,21 +1,24 @@
 package com.afk.backend.control.service.impl;
 import com.afk.backend.client.external.dto.ChatRequest;
+import com.afk.backend.control.dto.EmpresaDto;
 import com.afk.backend.control.dto.FavoritoDto;
 import com.afk.backend.control.dto.UsuarioDto;
 import com.afk.backend.control.mapper.FavoritoMapper;
+import com.afk.backend.control.mapper.UsuarioMapper;
 import com.afk.backend.control.service.ChatService;
 import com.afk.backend.control.service.FavoritoService;
-import com.afk.backend.model.entity.Favorito;
-import com.afk.backend.model.entity.Publicacion;
-import com.afk.backend.model.entity.Usuario;
-import com.afk.backend.model.entity.Vacante;
+import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.repository.FavoritoRepository;
 import com.afk.backend.model.repository.PublicacionRepository;
 import com.afk.backend.model.repository.UsuarioRepository;
 import com.afk.backend.model.repository.VacanteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -31,6 +34,7 @@ public class FavoritoServiceImpl implements FavoritoService {
     private final UsuarioRepository usuarioRepository;
     private final ChatService chatService;
     private final FavoritoMapper favoritoMapper;
+    private final UsuarioMapper usuarioMapper;
 
     @Override
     @Transactional
@@ -130,6 +134,18 @@ public class FavoritoServiceImpl implements FavoritoService {
 
     @Override
     public List<UsuarioDto> findUsuariosFavoritosDeGerente(Long idGerente) {
-        return favoritoRepository.findUsuariosFavoritosByGerenteId(idGerente);
+        List<Usuario> ususarios=favoritoRepository.findUsuariosFavoritosByUsuario(idGerente);
+        return usuarioMapper.toListDto(ususarios);
+    }
+
+    @Override
+    public Integer obtenerCantidadMatchsByUsuario(Long idUsuario) {
+        List<FavoritoDto> favoritos = findMutualMatches(idUsuario);
+        return favoritos.size();
+    }
+    @Override
+    public Page<FavoritoDto> searchFavoritosByFecha(LocalDateTime fecha, Pageable pageable){
+        Page<Favorito> favorito= favoritoRepository.findByFechaContaining(fecha, pageable);
+        return favorito.map(favoritoMapper::toDto);
     }
 }

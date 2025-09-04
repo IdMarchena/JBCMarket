@@ -1,7 +1,9 @@
 package com.afk.backend.control.service.impl;
 
 import com.afk.backend.client.external.dto.UbicacionDt;
+import com.afk.backend.control.dto.RequisitoDto;
 import com.afk.backend.control.dto.VacanteDto;
+import com.afk.backend.control.mapper.RequisitoMapper;
 import com.afk.backend.control.mapper.VacanteMapper;
 import com.afk.backend.control.service.VacanteService;
 import com.afk.backend.model.entity.*;
@@ -9,10 +11,13 @@ import com.afk.backend.model.entity.enm.EstadoUbicacion;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +29,8 @@ public class VacanteServiceImpl implements VacanteService {
     @Qualifier("vacanteMapperImpl")
     private final VacanteMapper mapper;
     private final UbicacionServiceImpl ubicacionService;
+    private final RequisitoServiceImpl requisitoService;
+    private final RequisitoMapper requisitoMapper;
 
     @Override
     @Transactional
@@ -50,11 +57,15 @@ public class VacanteServiceImpl implements VacanteService {
                     return ubicacionRepository.save(nuevaUbicacion);
                 });
 
-
+        List<RequisitoDto> requisitos = requisitoService.findRequisitosByVacanteId(vacanteDto.id());
+        List<Requisito> requisitoE = requisitos.stream().map(requisitoMapper::toEntity).collect(Collectors.toList());
         Vacante vacante = mapper.toEntity(vacanteDto);
+        vacante.setNombre(vacanteDto.nombre());
+        vacante.setDescripcion(vacanteDto.descripcion());
         vacante.setUbicacion(ubicacion);
         vacante.setEmpresa(empresa);
-
+        vacante.setFechaVcante(vacanteDto.fechaVcante());
+        vacante.setRequisitos(requisitoE);
         Vacante savedVacante = vacanteRepository.save(vacante);
         return mapper.toDto(savedVacante);
     }
@@ -111,6 +122,12 @@ public class VacanteServiceImpl implements VacanteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<VacanteDto> findVacantesByNombre(String nombre) {
+        return mapper.toDtoList(vacanteRepository.findByNombre(nombre));
+    }
+
+    @Override
     @Transactional
     public void deleteVacanteById(Long id) {
         if (!vacanteRepository.existsById(id)) {
@@ -123,5 +140,25 @@ public class VacanteServiceImpl implements VacanteService {
         return ubicacion.getLatitud() == null ||
                 ubicacion.getLongitud() == null ||
                 ubicacion.getEstado() != EstadoUbicacion.ACTIVA;
+    }
+
+    @Override
+    @Transactional
+    public Integer countVacantesByEmpresaId (Long empresaId) {
+        List<Vacante> vacantes = vacanteRepository.findByEmpresa_Id(empresaId);
+        return (int)vacantes.size();
+    }
+    @Override
+    public Page<VacanteDto> findByNombreContaining (String nombre, Pageable pageable) {
+        Page<Vacante> vacantes = vacanteRepository.findByNombreContaining(nombre, pageable);
+        return vacantes.map(mapper::toDto);
+    }
+    @Override
+    public VacanteDto updateVacante (Long id, VacanteDto vacanteDto) {
+        Vacante vacanteExistente = vacanteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vacante no encontrada"));
+        mapper.updateEntityFromDto(vacanteExistente, vacanteDto);
+        Vacante updateVacante = vacanteRepository.save(vacanteExistente);
+        return mapper.toDto(updateVacante);
     }
 }

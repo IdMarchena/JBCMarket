@@ -69,7 +69,8 @@ public class CalificacionServiceImpl implements CalificacionService {
 
     @Override
     public Page<CalificacionDto> buscarCalificaciones(String filtro, Pageable pageable){
-        Page<Calificacion> calificaciones= repository.findByNombreContaining(filtro, pageable);
+        Page<Calificacion> calificaciones= repository.findByComentarioContaining(filtro, pageable);
         return calificaciones.map(mapper::toDto);
     }
+
 }

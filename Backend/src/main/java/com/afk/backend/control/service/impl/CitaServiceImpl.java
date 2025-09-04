@@ -1,28 +1,31 @@
 package com.afk.backend.control.service.impl;
-
 import com.afk.backend.control.dto.CitaDto;
 import com.afk.backend.control.mapper.CitaMapper;
 import com.afk.backend.control.service.CitaService;
 import com.afk.backend.model.entity.Cita;
 import com.afk.backend.model.repository.CitaRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CitaServiceImpl implements CitaService {
 
     private final CitaRepository repository;
+
+    @Qualifier("citaMapperImpl")
     private final CitaMapper mapper;
 
-    public CitaServiceImpl(CitaRepository repository, CitaMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     @Override
     public CitaDto createCita(CitaDto dto) {
@@ -67,4 +70,16 @@ public class CitaServiceImpl implements CitaService {
         return citaOptional.map(cita -> List.of(mapper.toDto(cita)))
                 .orElseGet(Collections::emptyList);
     }
+
+    @Override
+    public Integer obtenerCantidadCitas(){
+        return (int) repository.count();
+    }
+
+    @Override
+    public Page<CitaDto> buscarCitas(LocalDateTime filtro, Pageable pageable){
+        Page<Cita> ubicacions= repository.findByFechaContaining(filtro, pageable);
+        return ubicacions.map(mapper::toDto);
+    }
+
 }

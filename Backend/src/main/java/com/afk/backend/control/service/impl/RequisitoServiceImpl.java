@@ -28,12 +28,12 @@ public class RequisitoServiceImpl implements RequisitoService {
         Vacante vacante = vacanteRepository.findById(requisitoDto.idVacante())
                 .orElseThrow(() -> new RuntimeException("Vacante no encontrada"));
 
-        TipoRequisito tipoRequisito = tipoRequisitoRepository.findById(requisitoDto.idTipoRequisito())
+        TipoRequisito tipoRequisito = tipoRequisitoRepository.findById(requisitoDto.idTipo())
                 .orElseThrow(() -> new RuntimeException("Tipo de requisito no encontrado"));
 
         Requisito requisito = mapper.toEntity(requisitoDto);
         requisito.setVacante(vacante);
-        requisito.setTipo_requisito(tipoRequisito);
+        requisito.setTipo(tipoRequisito);
 
         Requisito savedRequisito = requisitoRepository.save(requisito);
         return mapper.toDto(savedRequisito);
