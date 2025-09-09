@@ -51,8 +51,8 @@ public class VacanteController {
         return ResponseEntity.ok(vacantes);
     }
 
-    @GetMapping("/findAllVacantesByName/nombre")
-    public ResponseEntity<List<VacanteDto>> listarVacantesPorNombre(@RequestParam String nombre) {
+    @GetMapping("/findAllVacantesByName/{nombre}")
+    public ResponseEntity<List<VacanteDto>> listarVacantesPorNombre(@PathVariable String nombre) {
         return ResponseEntity.ok(vacanteService.findVacantesByNombre(nombre));
     }
 

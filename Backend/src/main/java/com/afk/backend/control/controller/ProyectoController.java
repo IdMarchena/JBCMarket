@@ -1,40 +1,56 @@
 package com.afk.backend.control.controller;
 
+import com.afk.backend.control.dto.PerfilDto;
 import com.afk.backend.control.dto.ProyectoDto;
 import com.afk.backend.control.service.ProyectoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/proyectos")
+@RequestMapping("/api/v1/proyectos")
 @RequiredArgsConstructor
 public class ProyectoController {
     private final ProyectoService proyectoService;
 
-    @PostMapping
-    public ResponseEntity<ProyectoDto> crearProyecto(@RequestBody ProyectoDto proyectoDto) {
-        return ResponseEntity.ok(proyectoService.createProyecto(proyectoDto));
+    @GetMapping("/getCuantityProyectoByIdPerfil/{id}")
+    public ResponseEntity<String> getProyectoByIdPerfil(@PathVariable Long id){
+        return ResponseEntity.ok("esta es la cantidad de proyectos del perfil"+proyectoService.cuantityProyectoByIdPerfil(id));
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/createProject")
+    public ResponseEntity<ProyectoDto> crearProject(@RequestPart("proyecto") ProyectoDto proyecto,
+                                                 @RequestPart(value = "archivo",required = false) MultipartFile archivo) {
+        System.out.println("Proyecto recibido: " + proyecto);
+        System.out.println("Archivo recibido: " + (archivo != null ? archivo.getOriginalFilename() : "Ninguno"));
+        return ResponseEntity.ok(proyectoService.createProyecto(proyecto, archivo));
+    }
+
+    @GetMapping("/getProjectById/{id}")
     public ResponseEntity<ProyectoDto> buscarProyectoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(proyectoService.findProyectoById(id));
     }
 
-    @GetMapping
+    @GetMapping("/getAllProjects")
     public ResponseEntity<List<ProyectoDto>> listarProyectos() {
         return ResponseEntity.ok(proyectoService.findAllProyectos());
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProyectoDto> actualizarProyecto(@PathVariable Long id, @RequestBody ProyectoDto proyectoDto) {
-        return ResponseEntity.ok(proyectoService.updateProyecto(id, proyectoDto));
+    @GetMapping("/getAllProjectsByIdPerfil/{id}")
+    public ResponseEntity<List<ProyectoDto>> listarProyectosByIdPerfil(@PathVariable Long id) {
+        return ResponseEntity.ok(proyectoService.findAllProyectosByUsuario(id));
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/updateProjectById/{id}")
+    public ResponseEntity<ProyectoDto> actualizarProyecto(@RequestPart("proyecto") ProyectoDto proyecto,
+                                                          @PathVariable Long id,
+                                                          @RequestPart(value = "archivo",required = false) MultipartFile archivo) {
+        return ResponseEntity.ok(proyectoService.updateProyecto(id, proyecto,archivo));
+    }
+
+    @DeleteMapping("/deleteProjectById/{id}")
     public ResponseEntity<Void> eliminarProyecto(@PathVariable Long id) {
         proyectoService.deleteProyecto(id);
         return ResponseEntity.noContent().build();
