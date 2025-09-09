@@ -67,6 +67,9 @@ public class VacanteServiceImpl implements VacanteService {
         vacante.setFechaVcante(vacanteDto.fechaVcante());
         vacante.setRequisitos(requisitoE);
         Vacante savedVacante = vacanteRepository.save(vacante);
+        if(savedVacante.getEmpresa() == null || savedVacante.getEmpresa().getId() == null) {
+            throw new RuntimeException("No se puede crear la empresa");
+        }
         return mapper.toDto(savedVacante);
     }
 

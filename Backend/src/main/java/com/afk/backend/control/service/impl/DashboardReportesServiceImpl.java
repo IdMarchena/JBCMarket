@@ -40,6 +40,7 @@ public class DashboardReportesServiceImpl implements DashboardReportesService {
                 ));
 
         return new DashboardReportesDto(
+                empresaId,
                 totalReportes,
                 reportesAbiertos,
                 reportesResueltos,

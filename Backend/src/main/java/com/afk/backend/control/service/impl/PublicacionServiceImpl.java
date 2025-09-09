@@ -35,12 +35,12 @@ public class PublicacionServiceImpl implements PublicacionService {
         publicacion.setDescripcion(publicacionDto.descripcion());
         publicacion.setVacante(vacante);
         publicacion.setFechaPublicacion(LocalDateTime.now());
-        publicacion.setEstado_publiccaion(publicacionDto.estadoPublicacion());
+        publicacion.setEstadoPublicacion(publicacionDto.estadoPublicacion());
 
         // Verificar si hay calificaciones asociadas
-        if (publicacionDto.calificacionesIds() != null && !publicacionDto.calificacionesIds().isEmpty()) {
+        if (publicacionDto.calificaciones() != null && !publicacionDto.calificaciones().isEmpty()) {
             // Solo buscar calificaciones si la lista no está vacía
-            List<Calificacion> calificaciones = calificacionRepository.findAllById(publicacionDto.calificacionesIds());
+            List<Calificacion> calificaciones = calificacionRepository.findByPublicacion_Id(publicacionDto.id());
             publicacion.setCalificaciones(calificaciones);
         } else {
             // Si no hay calificaciones, inicializa la lista vacía para evitar null
@@ -80,7 +80,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacion.setDescripcion(publicacionDto.descripcion());
         }
         if (publicacionDto.estadoPublicacion() != null) {
-            publicacion.setEstado_publiccaion(publicacionDto.estadoPublicacion());
+            publicacion.setEstadoPublicacion(publicacionDto.estadoPublicacion());
         }
 
         Publicacion updatedPublicacion = publicacionRepository.save(publicacion);
