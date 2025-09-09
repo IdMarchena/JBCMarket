@@ -21,13 +21,20 @@ public interface PublicacionMapper {
         return vacante;
     }
 
-    @Mapping(target = "calificaciones", ignore = true)
+    @Mapping(target = "titulo",source = "titulo")
+    @Mapping(target = "descripcion",source = "descripcion")
     @Mapping(target = "vacante", source = "idVacante", qualifiedByName = "mapV")
+    @Mapping(target = "fechaPublicacion",source = "fechaPublicacion")
+    @Mapping(target = "estadoPublicacion",source = "estadoPublicacion")
+    @Mapping(target = "calificaciones", source = "calificaciones")
     Publicacion toEntity(PublicacionDto dto);
 
+    @Mapping(target = "titulo",source = "titulo")
+    @Mapping(target = "descripcion",source = "descripcion")
     @Mapping(target = "idVacante", source = "vacante.id")
-    @Mapping(target = "calificacionesIds", expression = "java(mapCalificaciones(publicacion.getCalificaciones()))")
-    @Mapping(target = "estadoPublicacion", source = "estado_publiccaion")
+    @Mapping(target = "fechaPublicacion",source = "fechaPublicacion")
+    @Mapping(target = "estadoPublicacion", source = "estadoPublicacion")
+    @Mapping(target = "calificaciones", source = "calificaciones")
     PublicacionDto toDto(Publicacion publicacion);
 
     default List<PublicacionDto> toDtoList(Iterable<Publicacion> publicaciones) {

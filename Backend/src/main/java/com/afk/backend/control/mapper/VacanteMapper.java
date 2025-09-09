@@ -40,7 +40,7 @@ public interface VacanteMapper {
     @Mapping(target = "ubicacion", source = "idUbicacion", qualifiedByName = "mapU")
     @Mapping(target = "empresa", source = "idEmpresa", qualifiedByName = "mapE")
     @Mapping(target = "fechaVcante", source = "fechaVcante")
-    @Mapping(target = "requisitos", expression = "java(mapR(dto.idsRequisitos()))")
+    @Mapping(target = "requisitos", source = "requisitos")
     Vacante toEntity(VacanteDto dto);
 
     @Mapping(source = "nombre", target = "nombre")
@@ -48,7 +48,7 @@ public interface VacanteMapper {
     @Mapping(source = "ubicacion.id", target = "idUbicacion")
     @Mapping(source = "empresa.id", target = "idEmpresa")
     @Mapping(source = "fechaVcante", target = "fechaVcante")
-    @Mapping(target = "idsRequisitos", expression = "java(vacante.getRequisitos() != null ? vacante.getRequisitos().stream().map(e -> e.getId()).collect(java.util.stream.Collectors.toList()) : null)")
+    @Mapping(source = "requisitos",target="requisitos")
     VacanteDto toDto(Vacante vacante);
 
     default List<VacanteDto> toDtoList(List<Vacante> vacantes) {
