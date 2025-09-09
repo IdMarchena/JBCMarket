@@ -5,6 +5,7 @@ public record PerfilDto(
         Long id,
         String perfilName,
         String descripcion,
-        List<Long> isdProyectos,
-        String urlForto) {
+        List<ProyectoDto> proyectos,
+        String urlForto,
+        Long idUsuario) {
 }

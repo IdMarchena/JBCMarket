@@ -8,5 +8,5 @@ public record VacanteDto(
         Long idUbicacion,
         Long idEmpresa,
         LocalDateTime fechaVcante,
-        List<Long> idsRequisitos
+        List<RequisitoDto> requisitos
 ) {}

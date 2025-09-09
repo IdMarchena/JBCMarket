@@ -4,7 +4,7 @@ import com.afk.backend.model.entity.enm.EstadoNotificacion;
 import java.time.LocalDateTime;
 
 public record NotificacionDto(
-        Integer id,
+        Long id,
         String mensaje,
         LocalDateTime fecha,
         Long idUsuario,

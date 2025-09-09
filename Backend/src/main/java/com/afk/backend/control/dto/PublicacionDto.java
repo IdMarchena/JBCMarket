@@ -11,5 +11,5 @@ public record PublicacionDto(
         Long idVacante,
         LocalDateTime fechaPublicacion,
         EstadoPublicacion estadoPublicacion,
-        List<Long> calificacionesIds
+        List<CalificacionDto> calificaciones
 ) {}

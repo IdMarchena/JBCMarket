@@ -1,6 +1,6 @@
 package com.afk.backend.control.dto;
 
 public record TipoEmpresaDto(
-        Integer id,
+        Long id,
         String descripcion
 ) {}

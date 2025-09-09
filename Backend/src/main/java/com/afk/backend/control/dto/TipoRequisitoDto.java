@@ -1,6 +1,6 @@
 package com.afk.backend.control.dto;
 
 public record TipoRequisitoDto(
-        Integer id,
+        Long id,
         String tipo_requisito
 ) {}
