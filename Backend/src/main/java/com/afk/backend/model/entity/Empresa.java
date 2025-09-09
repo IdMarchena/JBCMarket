@@ -25,7 +25,7 @@ public class Empresa {
     @JoinColumn(name = "id_usuario_gerente", nullable = false)
     private Usuario usuario;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_empresa", nullable = false)
     private TipoEmpresa tipo_Empresa;
 

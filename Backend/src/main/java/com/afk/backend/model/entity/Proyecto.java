@@ -24,4 +24,9 @@ public class Proyecto {
 
     @Column(name = "descripcion")
     private String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "perfil_id", nullable = false)
+    private Perfil perfil;
+
 }

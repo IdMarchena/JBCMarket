@@ -26,7 +26,7 @@ public class Vacante {
     @Column(name = "descripcion_vacante", nullable = false, length = 1000)
     private String descripcion;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
 
@@ -39,6 +39,7 @@ public class Vacante {
 
     @OneToMany(mappedBy = "vacante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisito> requisitos;
+    
 
 
 }

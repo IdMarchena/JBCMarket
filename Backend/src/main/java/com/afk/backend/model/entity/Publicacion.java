@@ -37,7 +37,7 @@ public class Publicacion {
     private LocalDateTime fechaPublicacion;
 
     @Enumerated(EnumType.STRING)
-    private EstadoPublicacion estado_publiccaion;
+    private EstadoPublicacion estadoPublicacion;
 
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Calificacion> calificaciones = new ArrayList<>();

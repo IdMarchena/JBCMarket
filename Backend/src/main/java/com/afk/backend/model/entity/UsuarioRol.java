@@ -25,7 +25,7 @@ public class UsuarioRol {
     @JoinColumn(name = "id_usuario-registrado",nullable = false)
     private UsuarioRegistrado usuarioRegistrado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 

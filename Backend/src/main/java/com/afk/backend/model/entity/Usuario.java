@@ -28,8 +28,7 @@ public class Usuario {
     @Column(name="contrasena",nullable = false)
     private String contrasenia;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfil_id")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Perfil perfil;
 
 }
