@@ -54,6 +54,7 @@ public interface EmpresaMapper {
     }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "tipo_Empresa", source = "idTipoEmpresa", qualifiedByName = "mapT")
     void updateEntityFromDto(EmpresaDto dto, @MappingTarget Empresa entity);
 }
 

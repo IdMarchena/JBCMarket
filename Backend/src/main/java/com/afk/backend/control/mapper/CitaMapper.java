@@ -51,6 +51,10 @@ public interface CitaMapper {
     CitaDto toDto(Cita cita);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "usuario", source = "idUsuarioPostulante", qualifiedByName = "mapU")
+    @Mapping(target = "postulacion", source = "idPostulacion", qualifiedByName = "mapP")
+    @Mapping(source = "estadoCita", target = "estado_cita")
+    @Mapping(target = "empresa", source = "idEmpresa", qualifiedByName = "mapE")
     void updateEntityFromDto(CitaDto dto, @MappingTarget Cita entity);
 }
 

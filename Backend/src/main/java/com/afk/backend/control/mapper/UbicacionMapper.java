@@ -23,6 +23,8 @@ public interface UbicacionMapper {
     List<Ubicacion> toEntities(List<UbicacionDt> ubicacionDtos);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "padre", expression = "java(dto.id_padre() != null ? new Ubicacion(dto.id_padre(), null, null, null, null, null) : null)")
+    @Mapping(target = "id", source = "id_ubicacion")
     void updateEntityFromDto(UbicacionDt dto, @MappingTarget Ubicacion entity);
 
 }

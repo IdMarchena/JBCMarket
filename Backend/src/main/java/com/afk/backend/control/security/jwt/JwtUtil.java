@@ -57,10 +57,10 @@ public class JwtUtil {
 
         // Extraer información adicional si es nuestro UserDetailsImpl
         Long userId = null;
-        String email = userDetails.username();
+        String email = userDetails.getUsername();
 
         if (userDetails instanceof UserDetailsImpl userDetailsImpl) {
-            userId = userDetailsImpl.id();
+            userId = userDetailsImpl.getId();
         }
 
         List<String> roles = userDetails.getAuthorities().stream()
@@ -70,7 +70,7 @@ public class JwtUtil {
         long now = System.currentTimeMillis();
 
         JwtBuilder jwtBuilder = Jwts.builder()
-                .setSubject(userDetails.username())
+                .setSubject(userDetails.getUsername())
                 .setIssuer(protocolConfig.getJwtIssuer())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + protocolConfig.getJwtExpirationMs()))

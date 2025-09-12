@@ -43,5 +43,8 @@ public interface HistorialPostulanteMapper {
     List<HistorialPostulanteDto> toDtoList(List<HistorialPostulante> historiales);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "fecha_historial_postulante", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "postulacion", expression = "java(mapP(dto.idPostulacion()))")
+    @Mapping(target = "usuario", expression = "java(mapU(dto.idUsuarioPostulante()))")
     void updateEntityFromDto(HistorialPostulanteDto dto, @MappingTarget HistorialPostulante entity);
 }

@@ -44,8 +44,11 @@ public interface UsuarioRolMapper {
     @Mapping(target = "fechaFin", source = "fecha_fin_rol")
     UsuarioRolDto toDto(UsuarioRol usuarioRol);
 
+    @Mapping(target = "id", source = "id_usuario")
     @Mapping(target = "rolNombre", source = "rol.role")
     @Mapping(target = "fechaActivacion", source = "fechaActivacionRol")
+    @Mapping(target = "fechaFin", source = "fecha_fin_rol")
+    @Mapping(target = "estado", source = "estadoUsuarioRol")
     HistorialResponse toHistorialResponse(UsuarioRol usuarioRol);
 
     List<UsuarioRolDto> toDtoList(List<UsuarioRol> usuarioRoles);
