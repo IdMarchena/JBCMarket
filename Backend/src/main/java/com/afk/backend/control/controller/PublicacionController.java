@@ -1,6 +1,5 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.PublicacionDto;
 import com.afk.backend.control.service.PublicacionService;
 import lombok.RequiredArgsConstructor;

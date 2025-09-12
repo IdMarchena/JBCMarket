@@ -3,7 +3,6 @@ package com.afk.backend.control.service;
 import com.afk.backend.control.dto.HistorialResponse;
 import com.afk.backend.control.dto.UsuarioRegistradoDto;
 import com.afk.backend.control.dto.UsuarioRolDto;
-import com.afk.backend.model.entity.enm.EstadoUsuarioRol;
 
 import java.util.List;
 

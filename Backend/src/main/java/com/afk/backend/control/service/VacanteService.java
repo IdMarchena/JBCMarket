@@ -12,6 +12,7 @@ public interface VacanteService {
     List<VacanteDto> findAllVacantes();
     List<VacanteDto> findVacantesByGerenteId(Long idGerente);
     List<VacanteDto> findVacantesByEmpresaId(Long idEmpresa);
+    List<VacanteDto> findVacantesByEmpresaUsuarioId(Long idUsuario);
     List<VacanteDto> findVacantesByNombre(String nombre);
     void deleteVacanteById(Long id);
     Page<VacanteDto> findByNombreContaining(String nombre, Pageable pageable);

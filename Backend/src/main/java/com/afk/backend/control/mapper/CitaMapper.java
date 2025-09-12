@@ -8,9 +8,6 @@ import com.afk.backend.model.entity.Empresa;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Mapper(componentModel = "spring")
 @Component
 public interface CitaMapper {

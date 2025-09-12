@@ -1,17 +1,14 @@
 package com.afk.backend.model.repository;
-import com.afk.backend.client.external.dto.ChatResponse;
 import com.afk.backend.model.entity.Chat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-    Optional<Chat> findChatByMensaje(String mensaje);
     Page<Chat> findByMensajeContaining(String mensaje, Pageable pageable);
 
     @Query("SELECT c FROM Chat c WHERE c.usuarioa.id = :userId OR c.usuariob.id = :userId")

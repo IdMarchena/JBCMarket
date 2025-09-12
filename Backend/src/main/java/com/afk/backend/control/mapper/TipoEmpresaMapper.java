@@ -1,8 +1,6 @@
 package com.afk.backend.control.mapper;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.TipoEmpresaDto;
-import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.TipoEmpresa;
 import org.mapstruct.*;
 

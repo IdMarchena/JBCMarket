@@ -19,7 +19,6 @@ public class NotificacionServiceImpl implements NotificacionService {
 
     private final NotificacionRepository notificacionRepository;
     private final UsuarioRepository usuarioRepository;
-    private final EmpresaRepository empresaRepository;
     private final PublicacionRepository publicacionRepository;
     private final PostulacionRepository postulacionRepository;
     private final CitaRepository citaRepository;

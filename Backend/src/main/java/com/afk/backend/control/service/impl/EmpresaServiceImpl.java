@@ -1,8 +1,6 @@
 package com.afk.backend.control.service.impl;
 import com.afk.backend.control.dto.EmpresaDto;
-import com.afk.backend.control.dto.VacanteDto;
 import com.afk.backend.control.mapper.EmpresaMapper;
-import com.afk.backend.control.mapper.VacanteMapper;
 import com.afk.backend.control.service.EmpresaService;
 import com.afk.backend.model.entity.Empresa;
 import com.afk.backend.model.entity.TipoEmpresa;
@@ -26,20 +24,17 @@ public class EmpresaServiceImpl implements EmpresaService {
 
     private final EmpresaRepository repository;
     private final EmpresaMapper mapper;
-    private final VacanteMapper vacanteMapper;
     private final UsuarioRepository usuarioRepository;
     private final TipoEmpresaRepository tipoEmpresaRepository;
     private final VacanteRepository vacanteRepository;
 
     public EmpresaServiceImpl(EmpresaRepository repository,
                               @Qualifier("empresaMapperImpl") EmpresaMapper mapper,
-                              @Qualifier("vacanteMapperImpl") VacanteMapper vacanteMapper,
                               UsuarioRepository usuarioRepository,
                               TipoEmpresaRepository tipoEmpresaRepository,
                               VacanteRepository vacanteRepository) {
         this.repository = repository;
         this.mapper = mapper;
-        this.vacanteMapper=vacanteMapper;
         this.usuarioRepository = usuarioRepository;
         this.tipoEmpresaRepository = tipoEmpresaRepository;
         this.vacanteRepository = vacanteRepository;
@@ -53,15 +48,18 @@ public class EmpresaServiceImpl implements EmpresaService {
         Usuario usuario = usuarioRepository.findUsuarioByIdUsuario(dto.idUsuarioGerente());
         empresa.setUsuario(usuario);
         Optional<TipoEmpresa> tipoEmpresa=tipoEmpresaRepository.findById(dto.idTipoEmpresa());
-        TipoEmpresa tipo=tipoEmpresa.get();
-        empresa.setTipo_Empresa(tipo);
+        if(tipoEmpresa.isPresent()) {
+            TipoEmpresa tipo=tipoEmpresa.get();
+            empresa.setTipo_Empresa(tipo);
+        }
+
         empresa.setNumeroEmpleados(dto.numeroEmpleados());
         if(dto.vacantes()!=null && !dto.vacantes().isEmpty()) {
             List<Vacante> vacantes = vacanteRepository.findByEmpresa_Id(dto.id());
+            empresa.setVacantes(vacantes);
         }else{
             empresa.setVacantes(List.of());
         }
-
         Empresa savedEmpresa = repository.save(empresa);
         return mapper.toDto(savedEmpresa);
     }
@@ -105,13 +103,6 @@ public class EmpresaServiceImpl implements EmpresaService {
         Optional<Empresa> empresaOptional = repository.findById(idUsuario);
         return empresaOptional.map(empresa -> List.of(mapper.toDto(empresa)))
                 .orElseGet(Collections::emptyList);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<VacanteDto> findVacantesByEmpresas(Long idEmpresa) {
-        List<Vacante> vacantes = repository.findVacantesByUsuarioId(idEmpresa);
-        return vacanteMapper.toDtoList(vacantes);
     }
 
     @Override

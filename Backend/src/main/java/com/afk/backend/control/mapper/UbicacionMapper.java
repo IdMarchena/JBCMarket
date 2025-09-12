@@ -2,8 +2,6 @@ package com.afk.backend.control.mapper;
 
 
 import com.afk.backend.client.external.dto.UbicacionDt;
-import com.afk.backend.control.dto.CalificacionDto;
-import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.Ubicacion;
 import org.mapstruct.*;
 

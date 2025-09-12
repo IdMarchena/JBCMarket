@@ -1,6 +1,5 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.EmpresaDto;
 import com.afk.backend.control.dto.FavoritoDto;
 import com.afk.backend.control.dto.UsuarioDto;
 import com.afk.backend.control.service.FavoritoService;
@@ -66,7 +65,7 @@ public class FavoritoController {
     }
 
     @GetMapping("/obtenerCantidadMatchsByUsuario/{idUsuario}")
-    public ResponseEntity<String> obtenerCantidadMatchsByUsuario(Long idUsuario){
+    public ResponseEntity<String> obtenerCantidadMatchsByUsuario(@PathVariable Long idUsuario){
         return ResponseEntity.ok("esta es la cantidad de favoritos del usuario con id: "+
                 idUsuario+
                 favoritoService.obtenerCantidadMatchsByUsuario(idUsuario));

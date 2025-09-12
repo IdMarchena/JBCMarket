@@ -38,7 +38,7 @@ public class JwtSecurityConfig {
             log.info("   └─ Cookie name: {}", JwtProtocolConfig.COOKIE_TOKEN_NAME);
 
             log.info("🌐 Public Endpoints:");
-            protocolConfig.PUBLIC_ENDPOINTS.forEach(endpoint ->
+            JwtProtocolConfig.PUBLIC_ENDPOINTS.forEach(endpoint ->
                     log.info("   ├─ {}", endpoint)
             );
 

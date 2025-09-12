@@ -1,12 +1,10 @@
 package com.afk.backend.control.mapper;
 
 import com.afk.backend.control.dto.EmpresaDto;
-import com.afk.backend.control.dto.PublicacionDto;
 import com.afk.backend.model.entity.*;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

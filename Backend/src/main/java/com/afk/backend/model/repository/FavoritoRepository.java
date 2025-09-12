@@ -1,5 +1,4 @@
 package com.afk.backend.model.repository;
-import com.afk.backend.control.dto.UsuarioDto;
 import com.afk.backend.model.entity.Favorito;
 import com.afk.backend.model.entity.Usuario;
 import org.springframework.data.domain.Page;

@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,10 +57,10 @@ public class JwtUtil {
 
         // Extraer información adicional si es nuestro UserDetailsImpl
         Long userId = null;
-        String email = userDetails.getUsername();
+        String email = userDetails.username();
 
         if (userDetails instanceof UserDetailsImpl userDetailsImpl) {
-            userId = userDetailsImpl.getId();
+            userId = userDetailsImpl.id();
         }
 
         List<String> roles = userDetails.getAuthorities().stream()
@@ -71,7 +70,7 @@ public class JwtUtil {
         long now = System.currentTimeMillis();
 
         JwtBuilder jwtBuilder = Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.username())
                 .setIssuer(protocolConfig.getJwtIssuer())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + protocolConfig.getJwtExpirationMs()))

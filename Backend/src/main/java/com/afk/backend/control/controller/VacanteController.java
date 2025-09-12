@@ -1,10 +1,8 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.VacanteDto;
 import com.afk.backend.control.service.VacanteService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,8 +60,8 @@ public class VacanteController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/getVacanciesCuantityByEmpresaId/{empresaId}")
-    public ResponseEntity<String> countVacantesByEmpresaId(@PathVariable Long id){
-        return ResponseEntity.ok("esta es la cantidad de vacantes de la empresa con id: "+id+vacanteService.countVacantesByEmpresaId(id));
+    public ResponseEntity<String> countVacantesByEmpresaId(@PathVariable Long empresaId){
+        return ResponseEntity.ok("esta es la cantidad de vacantes de la empresa con id: "+empresaId+vacanteService.countVacantesByEmpresaId(empresaId));
     }
 
     @PutMapping("/updateVacancies/{id}")

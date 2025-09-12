@@ -1,7 +1,6 @@
 package com.afk.backend.control.service;
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
-import com.afk.backend.client.external.dto.UbicacionDt;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

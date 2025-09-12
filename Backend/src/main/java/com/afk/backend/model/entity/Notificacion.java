@@ -1,7 +1,6 @@
 package com.afk.backend.model.entity;
 
 
-import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.entity.enm.EstadoNotificacion;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,11 +29,11 @@ public class Notificacion {
     private LocalDateTime fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = true)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empresa_id", nullable = true)
+    @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
     @Enumerated(EnumType.STRING)

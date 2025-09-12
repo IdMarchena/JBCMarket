@@ -1,10 +1,8 @@
 package com.afk.backend.model.entity;
 
-import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.entity.enm.EstadoSancion;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

@@ -2,11 +2,9 @@ package com.afk.backend.control.service.impl;
 
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
-import com.afk.backend.client.external.dto.UbicacionDt;
 import com.afk.backend.control.mapper.ChatMapper;
 import com.afk.backend.control.service.ChatService;
 import com.afk.backend.model.entity.Chat;
-import com.afk.backend.model.entity.Ubicacion;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.repository.ChatRepository;

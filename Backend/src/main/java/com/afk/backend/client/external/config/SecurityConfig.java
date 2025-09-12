@@ -93,9 +93,9 @@ public class SecurityConfig {
                         .successHandler(this::handleOAuth2Success)
                         .failureHandler(this::handleOAuth2Failure)
                 )
-                .formLogin(form -> form.disable())
+                .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
 
         return http.build();

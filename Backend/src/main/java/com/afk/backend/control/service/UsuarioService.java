@@ -1,6 +1,5 @@
 package com.afk.backend.control.service;
 
-import com.afk.backend.control.dto.PerfilDto;
 import com.afk.backend.control.dto.UsuarioDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
