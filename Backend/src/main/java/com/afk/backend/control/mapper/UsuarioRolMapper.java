@@ -1,6 +1,5 @@
 package com.afk.backend.control.mapper;
 
-import com.afk.backend.control.dto.CreateRequest;
 import com.afk.backend.control.dto.HistorialResponse;
 import com.afk.backend.control.dto.UsuarioRolDto;
 import com.afk.backend.model.entity.*;
@@ -29,19 +28,19 @@ public interface UsuarioRolMapper {
         }
     }
 
-    @Mapping(target = "id_usuario", ignore = true)  // <-- aquí estaba el error
-    @Mapping(target = "usuarioRegistrado", source = "usuarioRegistradoId", qualifiedByName = "mapUsuarioRegistrado")
-    @Mapping(target = "rol", source = "rolId", qualifiedByName = "mapRol")
-    @Mapping(target = "fechaActivacionRol", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "estadoUsuarioRol", expression = "java(com.afk.backend.model.entity.enm.EstadoUsuarioRol.ACTIVO)")
-    @Mapping(target = "fecha_fin_rol", ignore = true)
-    UsuarioRol toEntity(CreateRequest dto);
+    @Mapping(target = "id_usuario", source = "id", ignore = true)  // <-- aquí estaba el error
+    @Mapping(target = "usuarioRegistrado", source = "idUsuarioRegistrado", qualifiedByName = "mapUsuarioRegistrado")
+    @Mapping(target = "rol", source = "idRol", qualifiedByName = "mapRol")
+    @Mapping(target = "fechaActivacionRol", source = "fechaActivacion")
+    @Mapping(target = "estadoUsuarioRol", source = "estadoNombre")
+    @Mapping(target = "fecha_fin_rol", source = "fechaFin", ignore = true)
+    UsuarioRol toEntity(UsuarioRolDto dto);
 
     @Mapping(target = "id", source = "id_usuario")
     @Mapping(target = "idUsuarioRegistrado", source = "usuarioRegistrado.id")
     @Mapping(target = "idRol", source = "rol.id")
     @Mapping(target = "fechaActivacion", source = "fechaActivacionRol")
-    @Mapping(target = "estado", source = "estadoUsuarioRol")
+    @Mapping(target = "estadoNombre", source = "estadoUsuarioRol")
     @Mapping(target = "fechaFin", source = "fecha_fin_rol")
     UsuarioRolDto toDto(UsuarioRol usuarioRol);
 

@@ -31,8 +31,12 @@ public class UbicacionServiceImpl implements UbicacionService {
 
     @Override
     public Mono<UbicacionDt> getUbicacion(Long id) {
-
         return apiClient.obtenerUbicacionPorId(id);
+    }
+
+    @Override
+    public UbicacionDt findUbicacionById(Long id) {
+        return ubicacionMapper.toDto(ubicacionRepository.findById(id).orElseThrow(NoSuchElementException::new));
     }
 
     @Override

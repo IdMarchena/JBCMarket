@@ -98,6 +98,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return mapToDto(usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
     }
 
+    @Override
+    public boolean existsByCorreo(String correo) {
+        return usuarioRepository.existsByCorreo(correo);
+    }
+
     private UsuarioDto mapToDto(Usuario usuario) {
         return new UsuarioDto(
                 usuario.getId(),

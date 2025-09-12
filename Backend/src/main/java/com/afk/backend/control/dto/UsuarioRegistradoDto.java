@@ -12,7 +12,7 @@ public record UsuarioRegistradoDto(
         String rolNombre,
         Long ubicacionId,
         LocalDateTime fechaRegistro,
-        EstadoUsuarioRegistrado estado,
+        String estadoNombre,
         String username,
         String password
 ) {}

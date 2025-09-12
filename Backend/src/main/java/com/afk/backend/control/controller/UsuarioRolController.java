@@ -1,6 +1,5 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.CreateRequest;
 import com.afk.backend.control.dto.HistorialResponse;
 import com.afk.backend.control.dto.UsuarioRolDto;
 import com.afk.backend.control.service.UsuarioRolService;
@@ -18,8 +17,8 @@ public class UsuarioRolController {
     private final UsuarioRolService usuarioRolService;
 
     @PostMapping
-    public ResponseEntity<UsuarioRolDto> crearUsuarioRol(@RequestBody CreateRequest request) {
-        UsuarioRolDto creado = usuarioRolService.createUsuarioRol(request);
+    public ResponseEntity<UsuarioRolDto> crearUsuarioRol(@RequestBody UsuarioRolDto usuario) {
+        UsuarioRolDto creado = usuarioRolService.createUsuarioRol(usuario);
         return ResponseEntity.ok(creado);
     }
 

@@ -1,6 +1,5 @@
 package com.afk.backend.model.entity;
 
-import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.entity.enm.EstadoUsuarioRol;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +21,7 @@ public class UsuarioRol {
     private Long id_usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario-registrado",nullable = false)
+    @JoinColumn(name = "id_usuario_registrado",nullable = false)
     private UsuarioRegistrado usuarioRegistrado;
 
     @ManyToOne(fetch = FetchType.EAGER)

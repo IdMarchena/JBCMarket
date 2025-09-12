@@ -1,13 +1,12 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.JwtResponse;
-import com.afk.backend.control.dto.LoginRequest;
-import com.afk.backend.control.dto.SignUpRequest;
+import com.afk.backend.client.external.dto.UbicacionDt;
+import com.afk.backend.control.dto.*;
 import com.afk.backend.control.security.jwt.JwtUtil;
-import com.afk.backend.model.entity.*;
-import com.afk.backend.model.entity.enm.EstadoUsuarioRegistrado;
-import com.afk.backend.model.entity.enm.EstadoUsuarioRol;
-import com.afk.backend.model.repository.*;
+import com.afk.backend.control.service.impl.UbicacionServiceImpl;
+import com.afk.backend.control.service.impl.UsuarioRegistradoServiceImpl;
+import com.afk.backend.control.service.impl.UsuarioRolServiceImpl;
+import com.afk.backend.control.service.impl.UsuarioServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,11 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import com.afk.backend.model.entity.Rol;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,12 +30,11 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioRegistradoServiceImpl usuarioRegistradoServiceImpl;
+    private final UsuarioRolServiceImpl usuarioRolServiceImpl;
+    private final UsuarioServiceImpl usuarioServiceImpl;
+    private final UbicacionServiceImpl ubicacionServiceImpl;
     private final PasswordEncoder passwordEncoder;
-    private final RolRepository rolRepository;
-    private final UsuarioRolRepository usuarioRolRepository;
-    private final UsuarioRegistradoRepository usuarioRegistradoRepository;
-    private final UbicacionRepository ubicacionRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -54,12 +49,11 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwtToken = jwtUtil.generateJwtToken(authentication);
 
-            UsuarioRegistrado user = usuarioRegistradoRepository.findByCorreo(loginRequest.username())
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            UsuarioRegistradoDto user = usuarioRegistradoServiceImpl.findUsuarioRegistradoByEmail(loginRequest.username());
 
-            List<UsuarioRol> rolesActivos = usuarioRolRepository.findAllByUsuarioRegistradoAndEstadoUsuarioRol(
+            List<UsuarioRolDto> rolesActivos = usuarioRolServiceImpl.findAllByUsuarioRegistradoAndEstadoUsuarioRol(
                     user,
-                    EstadoUsuarioRol.ACTIVO
+                    "ACTIVO"
             );
             if (rolesActivos.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -67,14 +61,14 @@ public class AuthController {
             }
 
             List<String> roles = rolesActivos.stream()
-                    .map(ur -> ur.getRol().getRole().name()) // Obtener el nombre del enum
+                    .map(UsuarioRolDto::estadoNombre) // Obtener el nombre del enum
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(
                     new JwtResponse(
                             jwtToken,
                             "Bearer",
-                            user.getCorreo(),
+                            user.username(),
                             roles
                     )
             );
@@ -88,47 +82,39 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest sRequest) {
         try {
-            if (usuarioRepository.existsByCorreo(sRequest.correo())) {
+            if (usuarioServiceImpl.existsByCorreo(sRequest.correo())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("Error: El correo electrónico ya está en uso.");
             }
 
-            Rol rol = rolRepository.findByRole(sRequest.rol())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + sRequest.rol()));
+            UbicacionDt ubicacion = ubicacionServiceImpl.findUbicacionById(1L);
 
-            Ubicacion ubicacion = ubicacionRepository.findById(1L)
-                    .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+            UsuarioRegistradoDto nuevoUsuario = new UsuarioRegistradoDto(
+                    null,
+                    sRequest.nombre(),
+                    sRequest.correo(),
+                    null,
+                    1L,
+                    "USER",
+                    ubicacion.id_ubicacion(),
+                    LocalDateTime.now(),
+                    "ACTIVO",
+                    sRequest.nombre(),
+                    passwordEncoder.encode(sRequest.contrasenia())
+            );
 
-            Usuario usuario = Usuario.builder()
-                    .nombre(sRequest.nombre())
-                    .correo(sRequest.correo())
-                    .contrasenia(passwordEncoder.encode(sRequest.contrasenia()))
-                    .build();
+            UsuarioRegistradoDto savedUsuario = usuarioRegistradoServiceImpl.createUsuarioRegistrado(nuevoUsuario);
 
+            UsuarioRolDto usuarioRol = new UsuarioRolDto(
+                    null,
+                    savedUsuario.id(),
+                    savedUsuario.rolId(),
+                    LocalDateTime.now(),
+                    savedUsuario.estadoNombre(),
+                    null
+            );
 
-
-            UsuarioRegistrado nuevoUsuario = UsuarioRegistrado.builder()
-
-                    .nombre(sRequest.nombre())
-                    .correo(sRequest.correo())
-                    .contrasenia(usuario.getContrasenia())
-                    .ubicacion(ubicacion)
-                    .fecha_registro(LocalDateTime.now())
-                    .estado_usuario_registrado(EstadoUsuarioRegistrado.ACTIVO)
-                    .telefono_usuario(sRequest.cel())
-                    .rol(rol)
-                    .build();
-
-            UsuarioRegistrado savedUsuario = usuarioRegistradoRepository.save(nuevoUsuario);
-
-            UsuarioRol usuarioRol = UsuarioRol.builder()
-                    .usuarioRegistrado(savedUsuario)
-                    .rol(rol)
-                    .estadoUsuarioRol(EstadoUsuarioRol.ACTIVO)
-                    .fechaActivacionRol(LocalDateTime.now())
-                    .build();
-
-            usuarioRolRepository.save(usuarioRol);
+            usuarioRolServiceImpl.createUsuarioRol(usuarioRol);
 
             return ResponseEntity.ok("Usuario registrado correctamente");
         } catch (RuntimeException e) {

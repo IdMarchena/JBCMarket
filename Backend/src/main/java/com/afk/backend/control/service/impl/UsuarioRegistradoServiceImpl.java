@@ -6,7 +6,6 @@ import com.afk.backend.control.service.UsuarioRegistradoService;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ public class UsuarioRegistradoServiceImpl implements UsuarioRegistradoService {
     private final UsuarioRegistradoRepository usuarioRegistradoRepository;
     private final RolRepository rolRepository;
     private final UbicacionRepository ubicacionRepository;
-    @Qualifier("usuarioRegistradoMapperImpl")
     private final UsuarioRegistradoMapper mapper;
 
     @Override
@@ -57,6 +55,12 @@ public class UsuarioRegistradoServiceImpl implements UsuarioRegistradoService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         return mapper.toDto(usuario);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UsuarioRegistradoDto findUsuarioRegistradoByEmail(String correo){
+        return mapper.toDto(usuarioRegistradoRepository.findByCorreo(correo).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
     }
 
     @Override
