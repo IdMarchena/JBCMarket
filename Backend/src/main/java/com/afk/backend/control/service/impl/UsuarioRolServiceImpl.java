@@ -1,7 +1,7 @@
 package com.afk.backend.control.service.impl;
 
-import com.afk.backend.control.dto.CreateRequest;
 import com.afk.backend.control.dto.HistorialResponse;
+import com.afk.backend.control.dto.UsuarioRegistradoDto;
 import com.afk.backend.control.dto.UsuarioRolDto;
 import com.afk.backend.control.mapper.UsuarioRolMapper;
 import com.afk.backend.control.service.UsuarioRolService;
@@ -9,7 +9,6 @@ import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoUsuarioRol;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,20 +22,16 @@ public class UsuarioRolServiceImpl implements UsuarioRolService {
     private final UsuarioRolRepository usuarioRolRepository;
     private final UsuarioRegistradoRepository usuarioRegistradoRepository;
     private final RolRepository rolRepository;
-    @Qualifier("usuarioRolMapperImpl")
     private final UsuarioRolMapper mapper;
 
     @Override
     @Transactional
-    public UsuarioRolDto createUsuarioRol(CreateRequest request) {
-        UsuarioRegistrado usuario = usuarioRegistradoRepository.findById(request.usuarioRegistradoId())
+    public UsuarioRolDto createUsuarioRol(UsuarioRolDto usuarioRolDto) {
+        UsuarioRegistrado usuario = usuarioRegistradoRepository.findById(usuarioRolDto.idUsuarioRegistrado())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Rol rol = rolRepository.findById(request.rolId())
+        Rol rol = rolRepository.findById(usuarioRolDto.idRol())
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-
-        UsuarioRegistrado modificadoPor = usuarioRegistradoRepository.findById(request.modificadoPorId())
-                .orElseThrow(() -> new RuntimeException("Usuario modificador no encontrado"));
 
         usuarioRolRepository.findByUsuarioRegistradoAndEstadoUsuarioRol(usuario, EstadoUsuarioRol.ASIGNADO)
                 .ifPresent(rolActual -> {
@@ -45,7 +40,7 @@ public class UsuarioRolServiceImpl implements UsuarioRolService {
                     usuarioRolRepository.save(rolActual);
                 });
 
-        UsuarioRol usuarioRol = mapper.toEntity(request);
+        UsuarioRol usuarioRol = mapper.toEntity(usuarioRolDto);
         usuarioRol.setUsuarioRegistrado(usuario);
         usuarioRol.setRol(rol);
 
@@ -65,6 +60,12 @@ public class UsuarioRolServiceImpl implements UsuarioRolService {
     @Transactional(readOnly = true)
     public List<UsuarioRolDto> findAllUsuarioRoles() {
         return mapper.toDtoList(usuarioRolRepository.findAll());
+    }
+
+    @Override
+    public List<UsuarioRolDto> findAllByUsuarioRegistradoAndEstadoUsuarioRol(UsuarioRegistradoDto usuarioRegistradoDto, String estadoUsuarioRol) {
+        UsuarioRegistrado usuarioRegistrado = usuarioRegistradoRepository.findById(usuarioRegistradoDto.id()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return mapper.toDtoList(usuarioRolRepository.findAllByUsuarioRegistradoAndEstadoUsuarioRol(usuarioRegistrado,EstadoUsuarioRol.valueOf(estadoUsuarioRol)));
     }
 
     @Override
