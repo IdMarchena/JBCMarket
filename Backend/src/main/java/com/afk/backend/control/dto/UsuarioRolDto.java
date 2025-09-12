@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 public record UsuarioRolDto(
         Long id,
         Long idUsuarioRegistrado,
-        Integer idRol,
+        Long idRol,
         LocalDateTime fechaActivacion,
-        EstadoUsuarioRol estado,
+        String estadoNombre,
         LocalDateTime fechaFin
 ) {}
