@@ -4,6 +4,7 @@ import com.afk.backend.control.dto.PublicacionDto;
 import com.afk.backend.control.mapper.PublicacionMapper;
 import com.afk.backend.control.service.PublicacionService;
 import com.afk.backend.model.entity.*;
+import com.afk.backend.model.entity.enm.EstadoPublicacion;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         publicacion.setDescripcion(publicacionDto.descripcion());
         publicacion.setVacante(vacante);
         publicacion.setFechaPublicacion(LocalDateTime.now());
-        publicacion.setEstadoPublicacion(publicacionDto.estadoPublicacion());
+        publicacion.setEstadoPublicacion(EstadoPublicacion.valueOf(publicacionDto.estadoPublicacion()));
 
         // Verificar si hay calificaciones asociadas
         if (publicacionDto.calificaciones() != null && !publicacionDto.calificaciones().isEmpty()) {
@@ -78,7 +79,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             publicacion.setDescripcion(publicacionDto.descripcion());
         }
         if (publicacionDto.estadoPublicacion() != null) {
-            publicacion.setEstadoPublicacion(publicacionDto.estadoPublicacion());
+            publicacion.setEstadoPublicacion(EstadoPublicacion.valueOf(publicacionDto.estadoPublicacion()));
         }
 
         Publicacion updatedPublicacion = publicacionRepository.save(publicacion);
