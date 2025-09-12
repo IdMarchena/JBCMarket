@@ -10,6 +10,7 @@ import java.util.List;
 public interface UbicacionService {
     Mono<UbicacionDt> obtenerCoordenadas(String direccion);
     Mono<UbicacionDt> getUbicacion(Long id);
+    UbicacionDt findUbicacionById(Long id);
     void sincronizarUbicacion(Long id);
     Integer obtenerCantidadUbicaciones();
     List<UbicacionDt> obtenerUbicaciones();

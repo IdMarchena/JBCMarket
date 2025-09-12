@@ -15,6 +15,7 @@ public interface UsuarioService {
     void deleteUsuarioById(Long id);
     UsuarioDto findByCorreo(String correo);
     UsuarioDto findByNombre(String nombre);
+    boolean existsByCorreo(String correo);
     Integer getCantidadUsuarios();
     Page<UsuarioDto> SearchUserByFilter(String filtro, Pageable pageable);
 }

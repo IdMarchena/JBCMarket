@@ -7,6 +7,7 @@ import java.util.List;
 public interface UsuarioRegistradoService {
     UsuarioRegistradoDto createUsuarioRegistrado(UsuarioRegistradoDto usuario);
     UsuarioRegistradoDto findUsuarioRegistradoById(Long id);
+    UsuarioRegistradoDto findUsuarioRegistradoByEmail(String email);
     List<UsuarioRegistradoDto> findAllUsuariosRegistrados();
     void deleteUsuarioRegistradoById(Long id);
 }
