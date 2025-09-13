@@ -58,10 +58,17 @@ public class CitaController {
         return ResponseEntity.ok(creada);
     }
     @PutMapping("/updateCita")
-    public ResponseEntity<String> updateCita(@RequestParam Long id,@RequestBody CitaDto ubicacion) {
-        citaService.updateCita(id, ubicacion);
-        return ResponseEntity.ok("cita actualizada");
+    public ResponseEntity<CitaDto> updateCita(@RequestParam Long id,@RequestBody CitaDto ubicacion) {
+        CitaDto cita = citaService.updateCita(id, ubicacion);
+        return ResponseEntity.ok(cita);
     }
+
+    @GetMapping("/obtenerCitasByIdUsuario/{idUsuario}")
+    public ResponseEntity<List<CitaDto>> obtenerCitasByIdUsuario(@PathVariable Long idUsuario) {
+        List<CitaDto> citas = citaService.findCitasByUsuario(idUsuario);
+        return ResponseEntity.ok(citas);
+    }
+
     @DeleteMapping("/deleteCita")
     public ResponseEntity<String> deleteCita(@RequestParam Long id) {
         citaService.deleteCitaById(id);

@@ -72,9 +72,9 @@
                 return ResponseEntity.ok(creada);
             }
             @PutMapping("/updateUbicacion")
-            public ResponseEntity<String> updateUbicacion(@RequestParam Long id,@RequestBody UbicacionDt ubicacion) {
-                ubicacionService.updateUicacion(id, ubicacion);
-                return ResponseEntity.ok("ubicacion actualizada");
+            public ResponseEntity<UbicacionDt> updateUbicacion(@RequestParam Long id,@RequestBody UbicacionDt ubicacion) {
+                UbicacionDt ubicacionDt = ubicacionService.updateUicacion(id, ubicacion);
+                return ResponseEntity.ok(ubicacionDt);
             }
             @DeleteMapping("/deleteUbicacion")
             public ResponseEntity<String> deleteUbicacion(@RequestParam Long id) {

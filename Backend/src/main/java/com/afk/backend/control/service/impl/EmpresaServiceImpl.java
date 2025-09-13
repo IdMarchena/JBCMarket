@@ -125,7 +125,7 @@ public class EmpresaServiceImpl implements EmpresaService {
     @Override
     @Transactional(readOnly = true)
     public Page<EmpresaDto> searchByEmpresaOrRequisito(String filtro, Pageable pageable){
-        Page<Empresa> empresas= repository.findByNombreContaining(filtro, pageable);
+        Page<Empresa> empresas= repository.searchByEmpresaOrRequisito(filtro, pageable);
         return empresas.map(mapper::toDto);
     }
 }

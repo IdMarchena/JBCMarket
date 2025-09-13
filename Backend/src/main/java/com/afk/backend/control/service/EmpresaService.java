@@ -1,7 +1,6 @@
 package com.afk.backend.control.service;
 
 import com.afk.backend.control.dto.EmpresaDto;
-import com.afk.backend.control.dto.VacanteDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

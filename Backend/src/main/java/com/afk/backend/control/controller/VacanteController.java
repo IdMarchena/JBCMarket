@@ -54,6 +54,11 @@ public class VacanteController {
         return ResponseEntity.ok(vacanteService.findVacantesByNombre(nombre));
     }
 
+    @GetMapping("/findByVacantesByEmpresaUsuarioId/{idUsuario}")
+    public ResponseEntity<List<VacanteDto>> findByVacantesByEmpresaUsuarioId(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(vacanteService.findVacantesByEmpresaUsuarioId(idUsuario));
+    }
+
     @DeleteMapping("/deleteVacante/{id}")
     public ResponseEntity<Void> eliminarVacante(@PathVariable Long id) {
         vacanteService.deleteVacanteById(id);
@@ -65,13 +70,13 @@ public class VacanteController {
     }
 
     @PutMapping("/updateVacancies/{id}")
-    public ResponseEntity<VacanteDto> actualizarCalificacion(@PathVariable Long id, @RequestBody VacanteDto dto) {
+    public ResponseEntity<VacanteDto> actualizarVacante(@PathVariable Long id, @RequestBody VacanteDto dto) {
         VacanteDto actualizada = vacanteService.updateVacante(id, dto);
         return ResponseEntity.ok(actualizada);
     }
 
     @GetMapping("/searchVacanciesByFiltro")
-    public ResponseEntity<Page<VacanteDto>> buscarCalificaciones(
+    public ResponseEntity<Page<VacanteDto>> buscarVacantes(
             @RequestParam String filtro,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10")int size,
