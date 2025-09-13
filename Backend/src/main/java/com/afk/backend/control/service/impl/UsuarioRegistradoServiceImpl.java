@@ -23,25 +23,17 @@ public class UsuarioRegistradoServiceImpl implements UsuarioRegistradoService {
     @Override
     @Transactional
     public UsuarioRegistradoDto createUsuarioRegistrado(UsuarioRegistradoDto usuarioDto) {
-
-        if (usuarioDto.rolId() != null) {
-            Rol rol = rolRepository.findById(usuarioDto.rolId())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        }
-
-
         Ubicacion ubicacion = ubicacionRepository.findById(usuarioDto.ubicacionId())
                 .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
 
-
         UsuarioRegistrado usuario = mapper.toEntity(usuarioDto);
 
-
-        if (usuarioDto.rolId() != null) {
-            usuario.setRol(rolRepository.getReferenceById(usuarioDto.rolId()));
-        }
         usuario.setUbicacion(ubicacion);
-
+        if (usuarioDto.rolId() != null) {
+            Rol rol = rolRepository.findById(usuarioDto.rolId())
+                    .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+            usuario.setRol(rol);
+        }
 
         UsuarioRegistrado savedUsuario = usuarioRegistradoRepository.save(usuario);
 

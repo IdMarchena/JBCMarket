@@ -6,7 +6,6 @@ import com.afk.backend.control.service.SancionService;
 import com.afk.backend.model.entity.*;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ public class SancionServiceImpl implements SancionService {
     private final SancionRepository sancionRepository;
     private final UsuarioRepository usuarioRepository;
     private final PublicacionRepository publicacionRepository;
-    @Qualifier("sancionMapperImpl")
     private final SancionMapper mapper;
 
     @Override

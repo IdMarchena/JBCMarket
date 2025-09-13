@@ -2,7 +2,6 @@ package com.afk.backend.control.controller;
 
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
-import com.afk.backend.client.external.dto.UbicacionDt;
 import com.afk.backend.control.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

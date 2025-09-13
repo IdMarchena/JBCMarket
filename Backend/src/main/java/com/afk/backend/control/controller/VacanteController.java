@@ -1,10 +1,8 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.VacanteDto;
 import com.afk.backend.control.service.VacanteService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,24 +54,29 @@ public class VacanteController {
         return ResponseEntity.ok(vacanteService.findVacantesByNombre(nombre));
     }
 
+    @GetMapping("/findByVacantesByEmpresaUsuarioId/{idUsuario}")
+    public ResponseEntity<List<VacanteDto>> findByVacantesByEmpresaUsuarioId(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(vacanteService.findVacantesByEmpresaUsuarioId(idUsuario));
+    }
+
     @DeleteMapping("/deleteVacante/{id}")
     public ResponseEntity<Void> eliminarVacante(@PathVariable Long id) {
         vacanteService.deleteVacanteById(id);
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/getVacanciesCuantityByEmpresaId/{empresaId}")
-    public ResponseEntity<String> countVacantesByEmpresaId(@PathVariable Long id){
-        return ResponseEntity.ok("esta es la cantidad de vacantes de la empresa con id: "+id+vacanteService.countVacantesByEmpresaId(id));
+    public ResponseEntity<String> countVacantesByEmpresaId(@PathVariable Long empresaId){
+        return ResponseEntity.ok("esta es la cantidad de vacantes de la empresa con id: "+empresaId+vacanteService.countVacantesByEmpresaId(empresaId));
     }
 
     @PutMapping("/updateVacancies/{id}")
-    public ResponseEntity<VacanteDto> actualizarCalificacion(@PathVariable Long id, @RequestBody VacanteDto dto) {
+    public ResponseEntity<VacanteDto> actualizarVacante(@PathVariable Long id, @RequestBody VacanteDto dto) {
         VacanteDto actualizada = vacanteService.updateVacante(id, dto);
         return ResponseEntity.ok(actualizada);
     }
 
     @GetMapping("/searchVacanciesByFiltro")
-    public ResponseEntity<Page<VacanteDto>> buscarCalificaciones(
+    public ResponseEntity<Page<VacanteDto>> buscarVacantes(
             @RequestParam String filtro,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10")int size,

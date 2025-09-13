@@ -1,12 +1,10 @@
 package com.afk.backend.model.entity;
 
-import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.entity.enm.EstadoPublicacion;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,6 +38,6 @@ public class Publicacion {
     private EstadoPublicacion estadoPublicacion;
 
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Calificacion> calificaciones = new ArrayList<>();
+    private List<Calificacion> calificaciones;
 
 }

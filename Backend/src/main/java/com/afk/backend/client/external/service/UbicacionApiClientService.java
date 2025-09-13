@@ -1,6 +1,5 @@
 package com.afk.backend.client.external.service;
 
-import com.afk.backend.client.external.dto.UbicacionDTO;
 import com.afk.backend.client.external.dto.UbicacionDt;
 import com.afk.backend.model.entity.enm.EstadoUbicacion;
 import org.springframework.beans.factory.annotation.Qualifier;

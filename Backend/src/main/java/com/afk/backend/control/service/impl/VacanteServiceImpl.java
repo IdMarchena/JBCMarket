@@ -10,7 +10,6 @@ import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoUbicacion;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ public class VacanteServiceImpl implements VacanteService {
     private final VacanteRepository vacanteRepository;
     private final UbicacionRepository ubicacionRepository;
     private final EmpresaRepository empresaRepository;
-    @Qualifier("vacanteMapperImpl")
     private final VacanteMapper mapper;
     private final UbicacionServiceImpl ubicacionService;
     private final RequisitoServiceImpl requisitoService;
@@ -125,6 +123,11 @@ public class VacanteServiceImpl implements VacanteService {
     }
 
     @Override
+    public List<VacanteDto> findVacantesByEmpresaUsuarioId(Long idUsuario) {
+        return mapper.toDtoList(vacanteRepository.findByEmpresaUsuarioId(idUsuario));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<VacanteDto> findVacantesByNombre(String nombre) {
         return mapper.toDtoList(vacanteRepository.findByNombre(nombre));
@@ -149,7 +152,7 @@ public class VacanteServiceImpl implements VacanteService {
     @Transactional
     public Integer countVacantesByEmpresaId (Long empresaId) {
         List<Vacante> vacantes = vacanteRepository.findByEmpresa_Id(empresaId);
-        return (int)vacantes.size();
+        return vacantes.size();
     }
     @Override
     public Page<VacanteDto> findByNombreContaining (String nombre, Pageable pageable) {

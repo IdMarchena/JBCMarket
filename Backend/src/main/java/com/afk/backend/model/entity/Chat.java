@@ -1,6 +1,5 @@
 package com.afk.backend.model.entity;
 
-import com.afk.backend.model.entity.enm.EstadoAlerta;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import jakarta.persistence.*;
 import lombok.*;

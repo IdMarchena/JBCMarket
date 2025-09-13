@@ -1,6 +1,5 @@
 package com.afk.backend.control.service.impl;
 import com.afk.backend.client.external.dto.ChatRequest;
-import com.afk.backend.control.dto.EmpresaDto;
 import com.afk.backend.control.dto.FavoritoDto;
 import com.afk.backend.control.dto.UsuarioDto;
 import com.afk.backend.control.mapper.FavoritoMapper;

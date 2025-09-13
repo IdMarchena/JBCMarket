@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -29,8 +30,7 @@ public class WebSocketChatController {
     @MessageMapping("/chat.send")
     @SendTo("/topic/public")
     public ChatResponse handlePublicMessage(@Payload ChatRequest message) {
-        ChatResponse savedMessage = chatService.createChat(message);
-        return savedMessage;
+        return chatService.createChat(message);
     }
 
     @MessageMapping("/chat.private.{userId}")
@@ -38,7 +38,7 @@ public class WebSocketChatController {
     public ChatResponse handlePrivateMessage(
             @Payload ChatRequest message,
             @DestinationVariable Long userId) {
-        Optional usuario= usuarioRepository.findById(userId);
+        Optional<Usuario> usuario= usuarioRepository.findById(userId);
         //quede por aca
         ChatRequest privateMessage = new ChatRequest(
                 message.senderId(),
@@ -46,15 +46,14 @@ public class WebSocketChatController {
                 message.message(),
                 message.status()
         );
-        ChatResponse savedMessage = chatService.createChat(privateMessage);
-        return savedMessage;
+        return chatService.createChat(privateMessage);
     }
 
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
     public ChatResponse addUser(@Payload ChatRequest message,
                                 SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", message.senderId());
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.senderId());
         return new ChatResponse(
                 null,
                 message.senderId(),

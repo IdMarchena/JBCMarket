@@ -1,14 +1,11 @@
 package com.afk.backend.control.service.impl;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.TipoEmpresaDto;
 import com.afk.backend.control.mapper.TipoEmpresaMapper;
 import com.afk.backend.control.service.TipoEmpresaService;
-import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.TipoEmpresa;
 import com.afk.backend.model.repository.TipoEmpresaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,6 @@ import java.util.NoSuchElementException;
 public class TipoEmpresaServiceImpl implements TipoEmpresaService {
 
     private final TipoEmpresaRepository tipoEmpresaRepository;
-    @Qualifier("tipoEmpresaMapperImpl")
     private final TipoEmpresaMapper mapper;
 
     @Override

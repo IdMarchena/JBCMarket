@@ -1,6 +1,5 @@
 package com.afk.backend.control.dto;
 
-import com.afk.backend.model.entity.enm.EstadoPublicacion;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,6 +9,6 @@ public record PublicacionDto(
         String descripcion,
         Long idVacante,
         LocalDateTime fechaPublicacion,
-        EstadoPublicacion estadoPublicacion,
+        String estadoPublicacion,
         List<CalificacionDto> calificaciones
 ) {}

@@ -1,12 +1,10 @@
 package com.afk.backend.control.mapper;
 
 import com.afk.backend.control.dto.EmpresaDto;
-import com.afk.backend.control.dto.PublicacionDto;
 import com.afk.backend.model.entity.*;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -56,6 +54,7 @@ public interface EmpresaMapper {
     }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "tipo_Empresa", source = "idTipoEmpresa", qualifiedByName = "mapT")
     void updateEntityFromDto(EmpresaDto dto, @MappingTarget Empresa entity);
 }
 

@@ -1,7 +1,11 @@
 package com.afk.backend.model.entity;
+
 import jakarta.persistence.*;
-import lombok.*;
-import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 @Entity
 @AllArgsConstructor
@@ -33,6 +37,6 @@ public class Empresa {
     private int numeroEmpleados;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vacante> vacantes = new ArrayList<>();
+    private List<Vacante> vacantes;
 
 }

@@ -1,6 +1,5 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.PerfilDto;
 import com.afk.backend.control.dto.ProyectoDto;
 import com.afk.backend.control.service.ProyectoService;
 import lombok.RequiredArgsConstructor;

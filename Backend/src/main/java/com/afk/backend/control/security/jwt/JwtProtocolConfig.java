@@ -27,7 +27,6 @@ public class JwtProtocolConfig {
     // Claims estándar del protocolo JWT
     public static final String CLAIM_USER_ID = "userId";
     public static final String CLAIM_EMAIL = "email";
-    public static final String CLAIM_ROLES = "roles";
     public static final String CLAIM_AUTHORITIES = "authorities";
 
     // Headers JWT
@@ -53,11 +52,6 @@ public class JwtProtocolConfig {
             "/favicon.ico",
             "/static/**"
     );
-
-    // Configuración de cookies JWT
-    public static final boolean COOKIE_HTTP_ONLY = true;
-    public static final boolean COOKIE_SECURE = true;
-    public static final String COOKIE_PATH = "/";
 
     /**
      * Obtiene la duración del token en minutos

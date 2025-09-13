@@ -1,8 +1,6 @@
 package com.afk.backend.control.controller;
 
-import com.afk.backend.control.dto.CalificacionDto;
 import com.afk.backend.control.dto.EmpresaDto;
-import com.afk.backend.control.dto.VacanteDto;
 import com.afk.backend.control.service.EmpresaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -59,12 +57,7 @@ public class EmpresaController {
         return ResponseEntity.ok(empresas);
     }
 
-    @GetMapping("/obtenerVacantesDeUnaEmpresa/{idEmpresa}")
-    public ResponseEntity<List<VacanteDto>> getEmpresaWithVacantes(@PathVariable Long idEmpresa) {
-        List<VacanteDto> vacantes = empresaService.findVacantesByEmpresas(idEmpresa);
-        return ResponseEntity.ok(vacantes);
-    }
-        @GetMapping("/obtenerCantidadEmpresas")
+    @GetMapping("/obtenerCantidadEmpresas")
     public ResponseEntity<String> getCantidadEmpresas() {
         return ResponseEntity.ok("La cantidad de empresas es"+ empresaService.obtenerCantidadEmpresas());
     }
