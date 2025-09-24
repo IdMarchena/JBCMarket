@@ -39,7 +39,7 @@ public class Vacante {
 
     @OneToMany(mappedBy = "vacante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisito> requisitos;
-    
+
 
 
 }
