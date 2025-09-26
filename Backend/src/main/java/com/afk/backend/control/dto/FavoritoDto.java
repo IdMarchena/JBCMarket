@@ -6,5 +6,6 @@ public record FavoritoDto(
         Long id,
         Long idUsuario,
         Long idPublicacion,
+        Long idPerfil,
         LocalDateTime fechaFavorito
 ) {}

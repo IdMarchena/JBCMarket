@@ -28,7 +28,7 @@ public interface UsuarioMapper {
 
     @Named("mapP")
     default Perfil mapP(Long id) {
-        if(id == null) return null;
+        if (id == null) return null;  // Si el id es null, no creamos un Perfil.
         Perfil perfil = new Perfil();
         perfil.setId(id);
         return perfil;
@@ -36,18 +36,20 @@ public interface UsuarioMapper {
 
     @Named("perfilToId")
     default Long perfilToId(Perfil perfil) {
-        if (perfil == null) return null;
-        return perfil.getId();
+        return (perfil != null) ? perfil.getId() : null;  // Si el perfil es null, devolvemos null.
     }
 
+    // Mapeo de UsuarioDto a Usuario (cuando tienes un idPerfil)
     @Mapping(target = "perfil", source = "idPerfil", qualifiedByName = "mapP")
-    Usuario toEntity(UsuarioDto UsuarioDto);
+    Usuario toEntity(UsuarioDto usuarioDto);
 
+    // Mapeo de Usuario a UsuarioDto (si el perfil es null, no asignamos idPerfil)
     @Mapping(source = "perfil", target = "idPerfil", qualifiedByName = "perfilToId")
-    UsuarioDto toDto(Usuario ususario);
+    UsuarioDto toDto(Usuario usuario);
 
-    List<UsuarioDto> toListDto(List<Usuario> ususarios);
+    // Mapeo de una lista de Usuarios a una lista de UsuarioDto
+    List<UsuarioDto> toListDto(List<Usuario> usuarios);
 
-    List<Usuario> toListEntity(List<UsuarioDto> UsuariosDto);
+    // Mapeo de una lista de UsuarioDto a una lista de Usuarios
+    List<Usuario> toListEntity(List<UsuarioDto> usuariosDto);
 }
-
