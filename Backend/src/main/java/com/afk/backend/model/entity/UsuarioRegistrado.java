@@ -33,7 +33,7 @@ public class UsuarioRegistrado extends Usuario{
     @Enumerated(EnumType.STRING)
     private EstadoUsuarioRegistrado estado_usuario_registrado;
 
-    @Column(name="telefono_usuario",length = 10)
+    @Column(name="telefono_usuario",length = 15)
     private String telefono_usuario;
 
     @ManyToMany(fetch = FetchType.LAZY)

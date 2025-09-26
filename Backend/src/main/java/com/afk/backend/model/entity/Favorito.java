@@ -21,11 +21,15 @@ public class Favorito {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publicacion_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "publicacion_id")
     private Publicacion publicacion;
 
     @Column(name="fecha_favorito",nullable = false)
     private LocalDateTime fecha;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="id_perfil")
+    private Perfil perfil;
 
 }

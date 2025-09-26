@@ -25,10 +25,11 @@ public class Usuario {
     @Column(name = "correo_usuario",nullable = false, length = 250)
     private String correo;
 
-    @Column(name="contrasena",nullable = false)
+    @Column(name="contrasena",nullable = false,length = 250)
     private String contrasenia;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Perfil perfil;
+
 
 }
