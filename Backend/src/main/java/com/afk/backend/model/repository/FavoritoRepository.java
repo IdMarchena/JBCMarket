@@ -15,9 +15,11 @@ public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
 
     @Query("SELECT COUNT(f) > 0 FROM Favorito f WHERE " +
             "f.usuario.id = :idUsuarioEmpresa AND " +
-            "f.publicacion.id = :idPublicacionUsuario")
-    boolean existsMutualMatch(@Param("idUsuarioEmpresa") Long idUsuarioEmpresa,
-                              @Param("idPublicacionUsuario") Long idPublicacionUsuario);
+            "(f.publicacion.id = :idPublicacionUsuario OR f.perfil.id = :idPerfil)")
+    boolean existsMutualMatchProfile(@Param("idUsuarioEmpresa") Long idUsuarioEmpresa,
+                                     @Param("idPublicacionUsuario") Long idPublicacionUsuario,
+                                     @Param("idPerfil") Long idPerfil);
+
 
 
     @Query("SELECT f FROM Favorito f WHERE f.usuario.id = :usuarioId")

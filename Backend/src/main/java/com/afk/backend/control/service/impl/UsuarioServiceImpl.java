@@ -1,5 +1,6 @@
 package com.afk.backend.control.service.impl;
 import com.afk.backend.control.dto.UsuarioDto;
+import com.afk.backend.control.mapper.UsuarioMapper;
 import com.afk.backend.control.service.UsuarioService;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.repository.UsuarioRepository;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
 
     @Override
     @Transactional
@@ -33,23 +35,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario savedUsuario = usuarioRepository.save(usuario);
 
-        return mapToDto(savedUsuario);
+        return usuarioMapper.toDto(savedUsuario);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UsuarioDto findUsuarioById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findByIdWithPerfil(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return mapToDto(usuario);
+        return usuarioMapper.toDto(usuario);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UsuarioDto> findAllUsuarios() {
-        return usuarioRepository.findAll().stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+        List<Usuario> usuarios = usuarioRepository.findAllWithPerfil();
+        return usuarios.stream().map(usuarioMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         Usuario updatedUsuario = usuarioRepository.save(usuario);
-        return mapToDto(updatedUsuario);
+        return usuarioMapper.toDto(updatedUsuario);
     }
 
     @Override
@@ -89,13 +90,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDto findByCorreo(String correo) {
         Usuario usuario = usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return mapToDto(usuario);
+        return usuarioMapper.toDto(usuario);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UsuarioDto findByNombre(String nombre) {
-        return mapToDto(usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+        Optional<Usuario> usuario= usuarioRepository.findByNombre(nombre);
+        return usuarioMapper.toDto(usuario.get());
     }
 
     @Override
@@ -103,15 +105,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.existsByCorreo(correo);
     }
 
-    private UsuarioDto mapToDto(Usuario usuario) {
-        return new UsuarioDto(
-                usuario.getId(),
-                usuario.getNombre(),
-                usuario.getCorreo(),
-                null,
-                usuario.getPerfil().getId()
-        );
-    }
+    @Override
+
+    public boolean existsByNombre(String nombre) {return usuarioRepository.existsByNombre(nombre);}
+
     @Override
     public Integer getCantidadUsuarios() {
         return  (int) usuarioRepository.count();
@@ -120,6 +117,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Page<UsuarioDto> SearchUserByFilter(String filtro, Pageable pageable){
         Page<Usuario> usuarios = usuarioRepository.findByCorreoContaining(filtro, pageable);
-        return usuarios.map(this::mapToDto);
+        return usuarios.map(usuarioMapper::toDto);
     }
 }

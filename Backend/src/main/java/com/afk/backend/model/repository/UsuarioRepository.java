@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -14,11 +15,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByNombre(String nombre);
     boolean existsById(@NonNull Long id);
     boolean existsByCorreo(String correo);
+    boolean existsByNombre(String nombre);
     Page<Usuario> findByCorreoContaining(String correo, Pageable pageable);
 
     @Query("SELECT ur.usuarioRegistrado FROM UsuarioRol ur " +
-            "JOIN ur.rol r " +
-            "WHERE ur.id_usuario = :id_usuario " +
-            "AND r.role = 'ROLE_POSTULANTE'")
+            "WHERE ur.id_usuario = :id_usuario ")
     Usuario findUsuarioByIdUsuario(Long id_usuario);
+
+    @Query("SELECT u FROM Usuario u LEFT JOIN FETCH u.perfil WHERE u.id = :id")
+    Optional<Usuario> findByIdWithPerfil(Long id);
+
+    @Query("SELECT u FROM Usuario u LEFT JOIN FETCH u.perfil")
+    List<Usuario> findAllWithPerfil();
+
+
 }

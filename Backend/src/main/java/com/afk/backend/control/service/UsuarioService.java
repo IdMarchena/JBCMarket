@@ -17,4 +17,5 @@ public interface UsuarioService {
     boolean existsByCorreo(String correo);
     Integer getCantidadUsuarios();
     Page<UsuarioDto> SearchUserByFilter(String filtro, Pageable pageable);
+    boolean existsByNombre(String nombre);
 }

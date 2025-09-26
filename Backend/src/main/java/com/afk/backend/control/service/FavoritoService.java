@@ -19,4 +19,5 @@ public interface FavoritoService {
     Integer obtenerCantidadMatchsByUsuario(Long idUsuario);
     Page<FavoritoDto> searchFavoritosByFecha(LocalDateTime fecha, Pageable pageable);
 
+
 }
