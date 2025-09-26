@@ -26,13 +26,13 @@ public class FavoritoController {
         FavoritoDto created = favoritoService.createFavorito(favoritoDto);
         return ResponseEntity.ok(created);
     }
-
+    //x
     @GetMapping("/obtenerFavoritoById/{id}")
     public ResponseEntity<FavoritoDto> getFavoritoById(@PathVariable Long id) {
         FavoritoDto favorito = favoritoService.findFavoritoById(id);
         return ResponseEntity.ok(favorito);
     }
-
+    //x
     @GetMapping("/getAllFavorites")
     public ResponseEntity<List<FavoritoDto>> getAllFavoritesByAspirante() {
         List<FavoritoDto> favoritos = favoritoService.findAllFavoritos();
@@ -45,32 +45,33 @@ public class FavoritoController {
         favoritoService.deleteFavoritoById(id);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/getFavoritoByAspirante/{idUsuario}")
-    public ResponseEntity<List<FavoritoDto>> getFavoritoByAspirante(@PathVariable Long idUsuario) {
+    //x
+    @GetMapping("/getFavoritoByPostulante/{idUsuario}")
+    public ResponseEntity<List<FavoritoDto>> getFavoritoByPostulante(@PathVariable Long idUsuario) {
         List<FavoritoDto> favoritos = favoritoService.findFavoritosByUsuario(idUsuario);
         return ResponseEntity.ok(favoritos);
     }
-
+    //x
     @GetMapping("/getMutualMatches/{idUsuario}")
     public ResponseEntity<List<FavoritoDto>> getMutualMatches(@PathVariable Long idUsuario) {
         List<FavoritoDto> matches = favoritoService.findMutualMatches(idUsuario);
         return ResponseEntity.ok(matches);
     }
-
+    //x
     @GetMapping("/getUsuariosFavoritosByGerente/{idGerente}")
     public ResponseEntity<List<UsuarioDto>> getUsuariosFavoritosDeGerente(@PathVariable Long idGerente) {
         List<UsuarioDto> usuarios = favoritoService.findUsuariosFavoritosDeGerente(idGerente);
         return ResponseEntity.ok(usuarios);
     }
-
+     //x
     @GetMapping("/obtenerCantidadMatchsByUsuario/{idUsuario}")
     public ResponseEntity<String> obtenerCantidadMatchsByUsuario(@PathVariable Long idUsuario){
         return ResponseEntity.ok("esta es la cantidad de favoritos del usuario con id: "+
                 idUsuario+
                 favoritoService.obtenerCantidadMatchsByUsuario(idUsuario));
     }
-        @GetMapping("/searchFavoritosByFecha")
+    //x
+    @GetMapping("/searchFavoritosByFecha")
     public ResponseEntity<Page<FavoritoDto>> searchFavoritosByFecha(
             @RequestParam LocalDateTime fecha,
             @RequestParam(defaultValue = "0") int page,
