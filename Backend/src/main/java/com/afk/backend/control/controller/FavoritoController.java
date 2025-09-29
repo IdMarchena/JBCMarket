@@ -38,6 +38,11 @@ public class FavoritoController {
         List<FavoritoDto> favoritos = favoritoService.findAllFavoritos();
         return ResponseEntity.ok(favoritos);
     }
+    @GetMapping("/getAllFavoritosbyUser/{id1}/{id2}")
+    public ResponseEntity<List<FavoritoDto>> getAllFavoritosbyUser(@PathVariable Long id1, @PathVariable Long id2) {
+        List<FavoritoDto> favoritos =favoritoService.matchesFavoritosByUsuario(id1, id2);
+        return ResponseEntity.ok(favoritos);
+    }
 
 
     @DeleteMapping("/deleteFavorito/{id}")
