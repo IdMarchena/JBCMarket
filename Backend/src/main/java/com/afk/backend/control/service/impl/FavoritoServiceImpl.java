@@ -10,6 +10,7 @@
     import com.afk.backend.model.entity.*;
     import com.afk.backend.model.entity.enm.EstadoChat;
     import com.afk.backend.model.repository.*;
+    import lombok.extern.slf4j.Slf4j;
     import org.springframework.data.domain.Page;
     import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@
 
     @Service
     @RequiredArgsConstructor
+    @Slf4j
     public class FavoritoServiceImpl implements FavoritoService {
 
         private final FavoritoRepository favoritoRepository;
@@ -70,7 +72,7 @@
                     isMatch = favoritoRepository.existsMutualMatchProfile(id1, id2, null);
                 }
             }
-
+            List<Favorito> favoritos = favoritoRepository.existMatch(id1, id2);
             if (isMatch) {
                 boolean yaExisteChat = !chatService.getChatsBetweenUsers(id1, id2).isEmpty();
 
@@ -173,5 +175,15 @@
         public Page<FavoritoDto> searchFavoritosByFecha(LocalDateTime fecha, Pageable pageable) {
             Page<Favorito> favorito = favoritoRepository.findByFechaContaining(fecha, pageable);
             return favorito.map(favoritoMapper::toDto);
+        }
+        @Override
+        public List<FavoritoDto> matchesFavoritosByUsuario(Long id1,Long id2){
+            List<Favorito> favoritos = favoritoRepository.existMatch(id1,id2);
+            if (favoritos.isEmpty()) {
+                log.debug("⚠️ No se encontraron favoritos para usuario={} gerente={}", id1, id2);
+            } else {
+                log.debug("✅ Favoritos encontrados: {}", favoritos);
+            }
+            return favoritos.stream().map(favoritoMapper::toDto).collect(Collectors.toList());
         }
     }
