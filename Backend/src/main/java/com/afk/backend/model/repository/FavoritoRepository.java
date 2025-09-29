@@ -20,6 +20,54 @@ public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
                                      @Param("idPublicacionUsuario") Long idPublicacionUsuario,
                                      @Param("idPerfil") Long idPerfil);
 
+    @Query("""
+SELECT f
+FROM Favorito f
+WHERE 
+    (
+        f.publicacion IS NOT NULL
+        AND (f.usuario.id = :idUsuario OR f.usuario.id = :idUsuarioGerente)
+        AND EXISTS (
+            SELECT 1
+            FROM Favorito f2
+            WHERE 
+                f2.perfil IS NOT NULL
+                AND f2.perfil.id = f.publicacion.id
+                AND f2.usuario.id IN (:idUsuario, :idUsuarioGerente)
+                AND f.usuario.id <> f2.usuario.id
+        )
+    )
+    OR
+    (
+        f.perfil IS NOT NULL
+        AND (f.usuario.id = :idUsuario OR f.usuario.id = :idUsuarioGerente)
+        AND EXISTS (
+            SELECT 1
+            FROM Favorito f3
+            WHERE 
+                f3.publicacion IS NOT NULL
+                AND f3.publicacion.id = f.perfil.id
+                AND f3.usuario.id IN (:idUsuario, :idUsuarioGerente)
+                AND f.usuario.id <> f3.usuario.id
+        )
+    )
+""")
+    List<Favorito> existMatch(@Param("idUsuario") Long idUsuario,
+                              @Param("idUsuarioGerente") Long idUsuarioGerente);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Query("SELECT f FROM Favorito f WHERE f.usuario.id = :usuarioId")
