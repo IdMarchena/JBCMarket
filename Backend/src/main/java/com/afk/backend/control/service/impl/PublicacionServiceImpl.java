@@ -7,6 +7,7 @@ import com.afk.backend.model.entity.*;
 import com.afk.backend.model.entity.enm.EstadoPublicacion;
 import com.afk.backend.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     private final PublicacionRepository publicacionRepository;
     private final VacanteRepository vacanteRepository;
     private final CalificacionRepository calificacionRepository;
+    @Qualifier("publicacionMapperImpl")
     private final PublicacionMapper mapper;
 
     @Override

@@ -2,12 +2,17 @@ package com.afk.backend.control.service.impl;
 
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
+import com.afk.backend.control.dto.MensajeDto;
 import com.afk.backend.control.mapper.ChatMapper;
+import com.afk.backend.control.mapper.MensajeMapper;  // Importar el MensajeMapper
 import com.afk.backend.control.service.ChatService;
+import com.afk.backend.model.entity.Calificacion;
 import com.afk.backend.model.entity.Chat;
+import com.afk.backend.model.entity.Mensaje;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.repository.ChatRepository;
+import com.afk.backend.model.repository.MensajeRepository;
 import com.afk.backend.model.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +31,8 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     private final UsuarioRepository usuarioRepository;
     private final ChatMapper chatMapper;
+    private final MensajeRepository mensajeRepository;
+    private final MensajeMapper mensajeMapper;  // Inyectar el MensajeMapper
 
     @Override
     @Transactional
@@ -43,6 +50,15 @@ public class ChatServiceImpl implements ChatService {
                 .estado_chat(chatRequest.status() != null ? chatRequest.status() : EstadoChat.ENVIADO)
                 .fechaCreacion(LocalDateTime.now())
                 .build();
+
+        // Verificar si hay mensajes asociadas al chat
+        if (chatRequest.mensajes() != null && !chatRequest.mensajes().isEmpty()) {
+            List<Mensaje> mensajes = mensajeRepository.findByChatId(chatRequest.senderId());
+            chat.setMensajes(mensajes);
+        } else {
+            // Si no hay mensajes, inicializa la lista vacía para evitar null
+            chat.setMensajes(List.of());
+        }
 
         Chat savedChat = chatRepository.save(chat);
         return toChatResponse(savedChat);
@@ -102,31 +118,40 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private ChatResponse toChatResponse(Chat chat) {
+        // Convertir los mensajes de la entidad a DTOs
+        List<MensajeDto> mensajeDtos = chat.getMensajes().stream()
+                .map(mensajeMapper::toDto)  // Usamos el mensajeMapper para convertir
+                .collect(Collectors.toList());
+
         return new ChatResponse(
                 chat.getId(),
                 chat.getUsuarioa().getId(),
                 chat.getUsuariob().getId(),
                 chat.getMensaje(),
                 chat.getEstado_chat(),
-                chat.getFechaCreacion()
+                chat.getFechaCreacion(),
+                mensajeDtos
         );
     }
+
     @Override
     @Transactional
     public void updateChatStatus(Long chatId, EstadoChat status) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new RuntimeException("Chat no encontrado"));
 
-        chat.setEstado_chat(status); // Actualiza el estado
-        chatRepository.save(chat); // Guarda el cambio
+        chat.setEstado_chat(status);
+        chatRepository.save(chat);
     }
+
     @Override
     public Integer obtenerCantidadDeChatsEncontrados(){
         return (int) chatRepository.count();
     }
+
     @Override
     public Page<ChatResponse> buscarChats(String filtro, Pageable pageable){
-        Page<Chat> chats= chatRepository.findByMensajeContaining(filtro, pageable);
+        Page<Chat> chats = chatRepository.findByMensajeContaining(filtro, pageable);
         return chats.map(chatMapper::toResponse);
     }
 }

@@ -2,7 +2,9 @@ package com.afk.backend.control.controller;
 
 import com.afk.backend.client.external.dto.ChatRequest;
 import com.afk.backend.client.external.dto.ChatResponse;
+import com.afk.backend.control.dto.MensajeDto;
 import com.afk.backend.control.service.ChatService;
+import com.afk.backend.control.service.MensajeService;
 import com.afk.backend.model.entity.Usuario;
 import com.afk.backend.model.entity.enm.EstadoChat;
 import com.afk.backend.model.repository.UsuarioRepository;
@@ -24,6 +26,7 @@ public class WebSocketChatController {
 
     private final UsuarioRepository usuarioRepository;
     private final ChatService chatService;
+    private final MensajeService mensajeService;
 
 
 
@@ -44,7 +47,8 @@ public class WebSocketChatController {
                 message.senderId(),
                 userId,
                 message.message(),
-                message.status()
+                message.status(),
+                message.mensajes()
         );
         return chatService.createChat(privateMessage);
     }
@@ -60,9 +64,19 @@ public class WebSocketChatController {
                 null,
                 "Usuario conectado",
                 EstadoChat.ENTREGADO,
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                message.mensajes()
         );
     }
+
+    @MessageMapping("/chat.send/{chatId}")
+    @SendTo("/topic/chat.{chatId}")
+    public MensajeDto handleMessage(
+            @Payload ChatRequest message,
+            @DestinationVariable Long chatId) {
+        return mensajeService.enviarMensaje(chatId, message.senderId(), message.message());
+    }
+
     @MessageMapping("/chat.markAsRead/{chatId}")
     public void markAsRead(@DestinationVariable Long chatId) {
         chatService.updateChatStatus(chatId, EstadoChat.LEIDO);

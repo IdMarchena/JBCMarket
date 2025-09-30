@@ -26,6 +26,7 @@ public interface ChatMapper {
     @Mapping(target = "usuariob", source = "receiverId")
     @Mapping(target = "mensaje", source = "message")
     @Mapping(target = "estado_chat", source = "status")
+    @Mapping(target = "mensajes", source = "mensajes")
     Chat toEntity(ChatRequest chatRequest);
 
     @Mapping(target = "id", source = "id")
@@ -33,6 +34,7 @@ public interface ChatMapper {
     @Mapping(target = "receiverId", source = "usuariob.id")
     @Mapping(target = "message", source = "mensaje")
     @Mapping(target = "status", source = "estado_chat")
+    @Mapping(target = "mensajes", source = "mensajes")
     ChatResponse toResponse(Chat chat);
 
     List<ChatResponse> toResponseList(List<Chat> chats);

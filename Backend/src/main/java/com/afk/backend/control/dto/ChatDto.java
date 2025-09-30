@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -20,4 +22,5 @@ public class ChatDto{
         private String mensaje;
         @Enumerated(EnumType.STRING)
         private EstadoChat estadoChat;
+        List<MensajeDto> mensajes;
 }

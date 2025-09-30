@@ -1,5 +1,4 @@
     package com.afk.backend.control.service.impl;
-
     import com.afk.backend.client.external.dto.ChatRequest;
     import com.afk.backend.control.dto.FavoritoDto;
     import com.afk.backend.control.dto.UsuarioDto;
@@ -15,14 +14,11 @@
     import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
-
     import java.time.LocalDateTime;
     import java.util.List;
     import java.util.NoSuchElementException;
     import java.util.stream.Collectors;
-
     import lombok.RequiredArgsConstructor;
-
     @Service
     @RequiredArgsConstructor
     @Slf4j
@@ -41,7 +37,7 @@
         @Transactional
         public FavoritoDto createFavorito(FavoritoDto dto) {
             Long id;
-            Integer bandera;
+            int bandera;
 
             if ((dto.idPublicacion() == null && dto.idPerfil() == null) ||
                     (dto.idPublicacion() != null && dto.idPerfil() != null)) {
@@ -52,11 +48,36 @@
             Favorito savedFavorito = favoritoRepository.save(favorito);
 
             if (dto.idPublicacion() != null) {
-                id = dto.idPublicacion();
+                try{
+                    Publicacion publicacion = publicacionRepository.findById(dto.idPublicacion()).get();
+                    id=publicacion.getVacante().getEmpresa().getUsuario().getId();
+                } catch (NoSuchElementException e){
+                    throw new RuntimeException("no se encontro la publicacion");
+                }
                 bandera = 0;
             } else {
-                id = dto.idPerfil();
+                try{
+                    Perfil perfil = perfilRepository.findById(dto.idPerfil()).get();
+                    id=perfil.getUsuario().getId();
+                } catch(NoSuchElementException e){
+                    throw new RuntimeException("no se encontro el perfil");
+                }
                 bandera = 1;
+            }
+            List<Favorito> favoritos = favoritoRepository.existMatch(dto.idUsuario(),id);
+            if(favoritos!=null && !favoritos.isEmpty()){
+                boolean yaExisteChat = !chatService.getChatsBetweenUsers(dto.idUsuario(), id).isEmpty();
+
+                if (!yaExisteChat) {
+                    ChatRequest chatRequest = new ChatRequest(
+                            dto.idUsuario(), id,
+                            "¡Match realizado! Pueden comenzar a conversar.",
+                            EstadoChat.ACTIVO,
+                            List.of()
+                    );
+                    chatService.createChat(chatRequest);
+                    notifyMatch(dto.idUsuario(), id);
+                }
             }
             checkForMutualMatch(dto.idUsuario(), id, bandera);
 
@@ -80,7 +101,8 @@
                     ChatRequest chatRequest = new ChatRequest(
                             id1, id2,
                             "¡Match realizado! Pueden comenzar a conversar.",
-                            EstadoChat.ACTIVO
+                            EstadoChat.ACTIVO,
+                            List.of()
                     );
                     chatService.createChat(chatRequest);
                     notifyMatch(id1, id2);

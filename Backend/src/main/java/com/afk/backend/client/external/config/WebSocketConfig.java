@@ -1,5 +1,5 @@
 package com.afk.backend.client.external.config;
-
+import com.afk.backend.client.external.config.WebSocketHandshakeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -20,6 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-chat")
                 .setAllowedOriginPatterns("*")
+                .addInterceptors(new WebSocketHandshakeInterceptor())  // Agrega el interceptor aquí
                 .withSockJS();
     }
 }
