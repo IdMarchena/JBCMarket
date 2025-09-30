@@ -1,0 +1,42 @@
+package com.afk.backend.model.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
+@Table(name = "empresas")
+public class Empresa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_empresa", updatable = false, nullable = false)
+    private Long id;
+
+    @Column(name = "nombre_emprpesa", nullable = false,length = 250)
+    private String nombre;
+
+    @Column(name="descripcion_empresa",nullable = false,length = 10000)
+    private String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_gerente", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_empresa", nullable = false)
+    private TipoEmpresa tipo_Empresa;
+
+    @Column(name = "numero_empleados", nullable = false)
+    private int numeroEmpleados;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vacante> vacantes;
+
+}
