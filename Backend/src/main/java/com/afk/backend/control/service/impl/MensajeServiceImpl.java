@@ -29,26 +29,32 @@ public class MensajeServiceImpl implements MensajeService {
     @Override
     @Transactional
     public MensajeDto enviarMensaje(Long chatId, Long senderId, String contenido) {
+        // Recuperamos el chat de la base de datos
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new RuntimeException("Chat no encontrado"));
 
+        // Recuperamos el usuario que envía el mensaje
         Usuario sender = usuarioRepository.findById(senderId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        // Creamos el mensaje
         Mensaje mensaje = Mensaje.builder()
-                .chat(chat)
+                .chat(chat)  // Asignamos el chat al mensaje
                 .sender(sender)
                 .contenido(contenido)
                 .estado(EstadoChat.ENVIADO)
                 .fecha(LocalDateTime.now())
                 .build();
 
+        // Guardamos el mensaje en la base de datos
         Mensaje saved = mensajeRepository.save(mensaje);
+
+        // Retornamos el mensaje como un DTO
         return mensajeMapper.toDto(saved);
     }
     @Override
     public List<MensajeDto> obtenerMensajes(Long chatId) {
-        List<Mensaje> mensajes = mensajeRepository.findAll();
+        List<Mensaje> mensajes = mensajeRepository.findByChatId(chatId);  // Filtra por chatId
         return mensajes.stream().map(mensajeMapper::toDto).collect(Collectors.toList());
     }
 }

@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-chat")
                 .setAllowedOriginPatterns("*")
-                .addInterceptors(new WebSocketHandshakeInterceptor())  // Agrega el interceptor aquí
-                .withSockJS();
+                .addInterceptors(new WebSocketHandshakeInterceptor());
+
     }
 }
